@@ -18,11 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="consola.cpp" />
+    <ClCompile Include="exemplo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="consola.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{FF519F5A-A585-4DEE-8C25-1798539D30AE}</ProjectGuid>
+    <ProjectGuid>{160F06BA-0F24-40FD-AC82-DBC6C8B29D59}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>BattleShiPP</RootNamespace>
+    <RootNamespace>Exemplo</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,13 +149,6 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="BattleShiPP.cpp" />
-    <ClCompile Include="consola.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="consola.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
