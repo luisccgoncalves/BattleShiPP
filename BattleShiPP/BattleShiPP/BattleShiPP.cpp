@@ -20,8 +20,10 @@ void intro() {
 		Consola::gotoxy(0, i);
 		printBanner();
 		Sleep(80);
+		//Beep(50*i, 100);
 		if (i)Consola::clrscr();
 	}
+	
 }
 
 int main() {
