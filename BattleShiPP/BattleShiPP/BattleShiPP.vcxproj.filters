@@ -26,5 +26,13 @@
     <ClInclude Include="consola.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BattleShiPP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="map.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -1,7 +1,44 @@
 #include <iostream>
-#include "consola.h"
+#include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
+
+#include "BattleShiPP.h"
+#include "consola.h"
+
+bool Map::load(string filename) {
+
+	ifstream map(filename);
+	string line, buff;
+
+	if (!map.is_open()) {
+		return false;
+	}
+
+	for (int i = 0; !map.eof(); i++) {
+		getline(map, line);
+		istringstream iss(line);
+
+		switch (i) {
+		case 0:
+			iss >> buff >> lin;
+			break;
+		case 1:
+			iss >> buff >> col;
+			break;
+		case 2:
+			iss >> buff >> moedas;
+			cout << "moedas=" << moedas << endl;
+			break;
+		default:
+			//storeMapLine();
+			cout << iss.str() << endl;
+		}
+	}
+	return true;
+}
 
 void printBanner() {
 
@@ -29,9 +66,13 @@ void intro() {
 int main() {
 
 
-	Consola::setTextColor(Consola::AZUL_CLARO);
+	Consola::setTextColor(Consola::BRANCO_CLARO);
 
-	intro();
+	//intro();
+
+	Map map;
+
+	map.load("map.txt");
 
 	Consola::getch();
 
