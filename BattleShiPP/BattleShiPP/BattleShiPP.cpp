@@ -8,6 +8,10 @@ using namespace std;
 #include "BattleShiPP.h"
 #include "consola.h"
 
+void Map::storeMapLine(istringstream &iss) {
+	cout << iss.str() << endl;
+}
+
 bool Map::load(string filename) {
 
 	ifstream map(filename);
@@ -33,8 +37,7 @@ bool Map::load(string filename) {
 			cout << "moedas=" << moedas << endl;
 			break;
 		default:
-			//storeMapLine();
-			cout << iss.str() << endl;
+			storeMapLine(iss);
 		}
 	}
 	return true;
