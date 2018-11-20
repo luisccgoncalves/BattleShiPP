@@ -6,6 +6,13 @@
 
 using namespace std;
 
+class Ponto {
+	int x, y;
+
+public:
+	Ponto(int x, int y);
+};
+
 class Boat {
 
 };
