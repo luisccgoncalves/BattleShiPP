@@ -12,7 +12,7 @@ using namespace std;
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
-Boat::Boat(int x, int y, bool isAmigo, int tipo=0) :x(x), y(y), isAmigo(isAmigo), tipo(tipo) {};
+Boat::Boat(int x, int y, bool isAmigo) :x(x), y(y), isAmigo(isAmigo) {};
 
 int Boat::getX() const {
 	return x;
@@ -72,8 +72,35 @@ int Sea::getPeixe() const{
 //================================ CLASS MAP ====================================
 //===============================================================================
 
-void Map::storeMapLine(istringstream &iss) {
-	cout << iss.str() << endl;
+bool Map::addSeaCell(int x, int y) {
+
+	try {
+		mar.push_back(new Sea(x, y));
+	}
+	catch (const bad_alloc) {
+		return false;
+	}
+
+	return true;
+}
+
+void Map::storeMapLine(istringstream &iss, int y) {
+
+	char c;
+
+	for (int x = 0; iss >> c; x++) {
+
+		switch (c) {
+		case '.':
+			addSeaCell(x,y);
+			break;
+		case '+':
+			break;
+		}
+
+	}
+
+	cout << endl;
 }
 
 bool Map::load(string filename) {
@@ -101,10 +128,17 @@ bool Map::load(string filename) {
 			cout << "moedas=" << moedas << endl;
 			break;
 		default:
-			storeMapLine(iss);
+			storeMapLine(iss, i-3);
 		}
 	}
 	return true;
+}
+
+void Map::print() {
+
+	for (auto it:mar) {
+		cout << it->getX();
+	}
 }
 
 //===============================================================================
@@ -144,6 +178,8 @@ int main() {
 	Map map;
 
 	map.load("map.txt");
+
+	map.print();
 
 	Consola::getch();
 

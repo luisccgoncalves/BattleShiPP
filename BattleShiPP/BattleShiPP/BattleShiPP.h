@@ -20,7 +20,7 @@ class Boat {
 
 public:
 
-	Boat(int x, int y, bool isAmigo, int tipo=0);
+	Boat(int x, int y, bool isAmigo);
 
 	int getX() const;
 	int getY() const;
@@ -79,11 +79,13 @@ class Map {
 	vector<Port*> portos;
 	vector<Boat*> barcos;
 
-	void storeMapLine(istringstream &iss);
+	void storeMapLine(istringstream &iss, int y);
 
 public:
 
+	bool addSeaCell(int x, int y);
 	bool load(string filename);
+	void print();
 };
 
 #endif
