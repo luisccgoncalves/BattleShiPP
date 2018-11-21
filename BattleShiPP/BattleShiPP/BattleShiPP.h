@@ -3,29 +3,70 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-class Ponto {
+class Boat {
+	//Esta classe pode ser melhorada com herança e polimorfismo
 	int x, y;
+	bool isAmigo;
+	int tipo;	//sub-classe?
+	int preco;
+	int soldados;
+	int agua;
+	int peixe;
+	int peixeMax;
 
 public:
-	Ponto(int x, int y);
-};
 
-class Boat {
+	Boat(int x, int y, bool isAmigo, int tipo=0);
+
+	int getX() const;
+	int getY() const;
+
 
 };
 
 class Port {
 
+	int x, y;
+	bool isAmigo;
+
+public:
+
+	Port(int x, int y, bool isAmigo);
+
+	int getX() const;
+	int getY() const;
+
 };
 
 class Land {
 
+	int x, y;
+
+public:
+
+	Land(int x, int y);
+
+	int getX() const;
+	int getY() const;
+
 };
 
 class Sea {
+
+	int x, y;
+	int peixe;
+
+public:
+
+	Sea(int x, int y);
+
+	int getX() const;
+	int getY() const;
+	int getPeixe() const;
 
 };
 
@@ -33,8 +74,15 @@ class Map {
 	int lin, col;
 	int moedas;
 
+	vector<Sea*> mar;
+	vector<Land*> terra;
+	vector<Port*> portos;
+	vector<Boat*> barcos;
+
 	void storeMapLine(istringstream &iss);
+
 public:
+
 	bool load(string filename);
 };
 
