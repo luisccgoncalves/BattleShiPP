@@ -103,4 +103,9 @@ public:
 	void print(int xOffset, int yOffset);
 };
 
+void printBanner();
+void intro();
+void printInterface();
+bool isCmdValid(string linha);
+
 #endif

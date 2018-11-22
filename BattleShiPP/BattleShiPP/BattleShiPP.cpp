@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <iterator>
 
 using namespace std;
 
@@ -309,6 +310,19 @@ void printInterface() {
 	}
 }
 
+bool isCmdValid(string linha) {
+
+	istringstream iss(linha);
+
+	vector<string> tokens{ istream_iterator<string>{iss},
+					  istream_iterator<string>{} };
+
+	if (tokens.front() == "lista")
+		return true;
+	else
+		return false;
+}
+
 int main() {
 
 	Map map;
@@ -328,13 +342,36 @@ int main() {
 
 	bool running = true;
 	string linha;
+	ostringstream buffer;
 
 	while (running) {
-		cin >> linha;
-		Consola::clrspc(2, 22, 77);
-	}
 
-	Consola::getch();
+		cin >> linha;
+
+		if (linha == "sair") {
+			running = false;
+		}
+		else if (linha== "prox"){
+			//executacomandos()
+			//actualiza movimentos()
+		}
+		else {
+
+			Consola::clrspc(42, 20, 37);
+
+			if (isCmdValid(linha)) {
+				buffer << linha << endl;
+				Consola::setTextColor(Consola::VERDE_CLARO);
+			}
+			else {
+				Consola::setTextColor(Consola::VERMELHO_CLARO);
+			}
+
+			cout << '>' << linha;
+			Consola::setTextColor(Consola::BRANCO);
+			Consola::clrspc(2, 22, 77);
+		}
+	}
 
 	return 0;
 }
