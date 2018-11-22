@@ -7,6 +7,12 @@
 
 using namespace std;
 
+static const vector<string> Comandos{ 
+	"exec",
+	"lista",
+	"compranav"
+};
+
 class Boat {
 	//Esta classe pode ser melhorada com herança e polimorfismo
 	int x, y;

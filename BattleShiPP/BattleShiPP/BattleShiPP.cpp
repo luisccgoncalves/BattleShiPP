@@ -9,6 +9,7 @@ using namespace std;
 #include "BattleShiPP.h"
 #include "consola.h"
 
+
 //===============================================================================
 //=============================== CLASS BOAT ====================================
 //===============================================================================
@@ -317,10 +318,16 @@ bool isCmdValid(string linha) {
 	vector<string> tokens{ istream_iterator<string>{iss},
 					  istream_iterator<string>{} };
 
-	if (tokens.front() == "lista")
-		return true;
-	else
-		return false;
+	for (auto it : Comandos)
+		if (it == tokens.front())
+			return true;
+
+	return false;
+
+	//if (tokens.front() == "lista")
+	//	return true;
+	//else
+	//	return false;
 }
 
 int main() {
@@ -341,12 +348,14 @@ int main() {
 	cout << '>';
 
 	bool running = true;
-	string linha;
+	//string linha;
 	ostringstream buffer;
 
 	while (running) {
 
-		cin >> linha;
+		string linha;
+		
+		getline(cin,linha);
 
 		if (linha == "sair") {
 			running = false;
