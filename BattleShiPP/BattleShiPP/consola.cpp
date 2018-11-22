@@ -61,6 +61,25 @@ void Consola::clrscr() {
 	gotoxy(0, 0);  // reposicina no canto superior esquerdo
 }
 
+void Consola::clrspc(int x, int y, int n) {
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	const COORD startCoords = { x, y };
+	DWORD dummy;
+
+	GetConsoleScreenBufferInfo(hconsola, &csbi);
+	FillConsoleOutputCharacter(hconsola,
+		' ',
+		n,
+		startCoords,
+		&dummy);
+	FillConsoleOutputAttribute(hconsola,
+		csbi.wAttributes,
+		n,
+		startCoords,
+		&dummy);
+	gotoxy(x, y);  // reposicina no canto superior esquerdo
+}
+
 void Consola::setTextColor(WORD color) {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
 	GetConsoleScreenBufferInfo(hconsola, &csbi);

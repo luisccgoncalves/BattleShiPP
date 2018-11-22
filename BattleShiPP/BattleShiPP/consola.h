@@ -66,6 +66,9 @@ public:
 	// - Usa a côr de fundo que estiver definida
 	static void clrscr();
 
+	//Limpa n caracteres à frente de (x,y)
+	static void clrspc(int x, int y, int n);
+
 	// Muda a côr das letras
 	// - Os cout/cin seguintes usarão essa côr
 	static void setTextColor(WORD color);

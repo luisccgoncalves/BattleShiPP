@@ -39,6 +39,7 @@ public:
 
 	int getX() const;
 	int getY() const;
+	bool isFriend()const;
 
 };
 
@@ -71,8 +72,20 @@ public:
 };
 
 class Map {
+
 	int lin, col;
 	int moedas;
+	int probpirata;
+	int preconavio;
+	int precosoldado;
+	int precovendpeixe;
+	int precocompmercad;
+	int precovendmercad;
+	int soldadosporto;
+	int probevento;
+	int probtempestade;
+	int probsereias;
+	int prombotim;
 
 	vector<Sea*> mar;
 	vector<Land*> terra;
@@ -84,8 +97,10 @@ class Map {
 public:
 
 	bool addSeaCell(int x, int y);
+	bool addLandCell(int x, int y);
+	bool addPort(int x, int y, char c);
 	bool load(string filename);
-	void print();
+	void print(int xOffset, int yOffset);
 };
 
 #endif
