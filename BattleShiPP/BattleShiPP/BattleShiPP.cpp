@@ -25,21 +25,27 @@ int Boat::getY() const {
 }
 
 //===============================================================================
-//=============================== CLASS PORT ====================================
+//============================= CLASS HARBOUR ===================================
 //===============================================================================
 
-Port::Port(int x, int y, bool isAmigo) :x(x), y(y), isAmigo(isAmigo) {};
+Harbour::Harbour(int x, int y, bool isAmigo) :x(x), y(y), isAmigo(isAmigo) {
+	isPrincipal = false;
+};
 
-int Port::getX() const {
+int Harbour::getX() const {
 	return x;
 }
 
-int Port::getY() const {
+int Harbour::getY() const {
 	return y;
 }
 
-bool Port::isFriend() const {
+bool Harbour::isFriend() const {
 	return isAmigo;
+}
+
+bool &Harbour::isMain(){
+	return isPrincipal;
 }
 
 //===============================================================================
@@ -102,10 +108,10 @@ bool Map::addLandCell(int x, int y) {
 	return true;
 }
 
-bool Map::addPort(int x, int y, char c) {
+bool Map::addHarbour(int x, int y, char c) {
 
 	try {
-		portos.push_back(new Port(x, y, c < 'Z'));
+		portos.push_back(new Harbour(x, y, c < 'Z'));
 	}
 	catch (const bad_alloc) {
 		return false;
@@ -128,7 +134,7 @@ void Map::storeMapLine(istringstream &iss, int y) {
 			addLandCell(x, y);
 			break;
 		default:
-			addPort(x, y, c);
+			addHarbour(x, y, c);
 			break;
 		}
 	}
@@ -194,6 +200,9 @@ bool Map::load(string filename) {
 			storeMapLine(iss, y++);
 		}
 	}
+
+	updateMainHarbour();
+
 	return true;
 }
 
@@ -238,6 +247,20 @@ void Map::print(int xOffset, int yOffset) {
 	}
 	
 	Consola::setBackgroundColor(Consola::PRETO);
+}
+
+void Map::updateMainHarbour() {
+
+	for (auto it : portos)
+		if (it->isFriend())
+			if (it->isMain())
+				return;
+
+	for (auto it : portos)
+		if (it->isFriend()) {
+			it->isMain() = true;
+			return;
+		}
 }
 
 //===============================================================================

@@ -9,8 +9,23 @@ using namespace std;
 
 static const vector<string> Comandos{ 
 	"exec",
+	"compranav",
+	"vendenav",
 	"lista",
-	"compranav"
+	"compra",
+	"vende",
+	"move",
+	"auto",
+	"stop",
+	"pirata",
+	"evpos",
+	"evnav",
+	"moedas",
+	"vaipara",
+	"comprasold",
+	"saveg",
+	"loadg",
+	"delg"
 };
 
 class Boat {
@@ -34,18 +49,20 @@ public:
 
 };
 
-class Port {
+class Harbour {
 
 	int x, y;
 	bool isAmigo;
+	bool isPrincipal;
 
 public:
 
-	Port(int x, int y, bool isAmigo);
+	Harbour(int x, int y, bool isAmigo);
 
 	int getX() const;
 	int getY() const;
 	bool isFriend()const;
+	bool &isMain();
 
 };
 
@@ -95,7 +112,7 @@ class Map {
 
 	vector<Sea*> mar;
 	vector<Land*> terra;
-	vector<Port*> portos;
+	vector<Harbour*> portos;
 	vector<Boat*> barcos;
 
 	void storeMapLine(istringstream &iss, int y);
@@ -104,9 +121,10 @@ public:
 
 	bool addSeaCell(int x, int y);
 	bool addLandCell(int x, int y);
-	bool addPort(int x, int y, char c);
+	bool addHarbour(int x, int y, char c);
 	bool load(string filename);
 	void print(int xOffset, int yOffset);
+	void updateMainHarbour();
 };
 
 void printBanner();
