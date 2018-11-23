@@ -8,24 +8,31 @@
 using namespace std;
 
 static const vector<string> Comandos{ 
-	"exec",
-	"compranav",
-	"vendenav",
-	"lista",
-	"compra",
-	"vende",
-	"move",
-	"auto",
-	"stop",
-	"pirata",
-	"evpos",
-	"evnav",
-	"moedas",
-	"vaipara",
-	"comprasold",
-	"saveg",
-	"loadg",
-	"delg"
+	"exec",			//0
+	"compranav",	//1
+	"vendenav",		//2
+	"lista",		//3
+	"compra",		//4
+	"vende",		//5
+	"move",			//6
+	"auto",			//7
+	"stop",			//8
+	"pirata",		//9
+	"evpos",		//10
+	"evnav",		//11
+	"moedas",		//12
+	"vaipara",		//13
+	"comprasold",	//14
+	"saveg",		//15
+	"loadg",		//16
+	"delg"			//17
+};
+
+static const vector<string> boatType{
+	"V",			//Veleiro
+	"G",			//Galeão
+	"E",			//Escuna
+	"F"				//Fragata
 };
 
 class Boat {
@@ -118,7 +125,7 @@ class Map {
 	void storeMapLine(istringstream &iss, int y);
 
 public:
-
+	bool addBoat();
 	bool addSeaCell(int x, int y);
 	bool addLandCell(int x, int y);
 	bool addHarbour(int x, int y, char c);
@@ -131,5 +138,9 @@ void printBanner();
 void intro();
 void printInterface();
 bool isCmdValid(string linha);
+int	getComandosPos(string cmd);
+void execCMD(Map &mapa, stringstream &cmdlist);
+
+void compraNav(Map &mapa, string cmd);
 
 #endif

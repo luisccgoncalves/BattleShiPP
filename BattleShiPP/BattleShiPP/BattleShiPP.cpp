@@ -84,6 +84,12 @@ int Sea::getPeixe() const{
 //================================ CLASS MAP ====================================
 //===============================================================================
 
+bool Map::addBoat() {
+
+	//get main harbour coords
+	return true;
+}
+
 bool Map::addSeaCell(int x, int y) {
 
 	try {
@@ -245,6 +251,10 @@ void Map::print(int xOffset, int yOffset) {
 		bEnemy++;
 		bFriend++;
 	}
+
+	for (auto it : barcos) {
+
+	}
 	
 	Consola::setBackgroundColor(Consola::PRETO);
 }
@@ -338,26 +348,54 @@ bool isCmdValid(string linha) {
 
 	istringstream iss(linha);
 
-	vector<string> tokens{ istream_iterator<string>{iss},
+	vector<string> palavras{ istream_iterator<string>{iss},
 					  istream_iterator<string>{} };
 
 	for (auto it : Comandos)
-		if (it == tokens.front())
+		if (it == palavras.front())
 			return true;
 
 	return false;
+}
 
-	//if (tokens.front() == "lista")
-	//	return true;
-	//else
-	//	return false;
+int	getComandosPos(string cmd) {
+	cmd = cmd.substr(0, cmd.find(" "));
+	for (unsigned int i = 0; i < Comandos.size(); i++)
+		if (Comandos[i] == cmd)
+			return i;
+
+	return -1;
+}
+
+void execCMD(Map &mapa, stringstream &cmdlist) {
+
+	string cmd;
+	//cout << cmdlist.str();
+	while (getline(cmdlist, cmd, '\n')) {
+		switch (getComandosPos(cmd)) {
+		case 0:
+			break;
+		case 1:
+			compraNav(mapa, cmd);
+			break;
+		case 3:
+			Beep(1000, 1000);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void compraNav(Map &mapa, string cmd) {
+	mapa.addBoat();
 }
 
 int main() {
 
-	Map map;
+	Map mapa;
 
-	map.load("map.txt");
+	mapa.load("map.txt");
 
 
 	Consola::setTextColor(Consola::BRANCO_CLARO);
@@ -366,25 +404,28 @@ int main() {
 	Consola::clrscr();
 		
 	printInterface();
-	map.print(1,1);
+	mapa.print(1,1);
 	Consola::gotoxy(1, 22);
 	cout << '>';
 
 	bool running = true;
 	//string linha;
-	ostringstream buffer;
+	stringstream buffer;
 
 	while (running) {
 
 		string linha;
 		
-		getline(cin,linha);
-
-		if (linha == "sair") {
+		getline(cin, linha);
+		
+		if (linha == "") {
+			Consola::gotoxy(2, 22);
+		}
+		else if (linha == "sair") {
 			running = false;
 		}
 		else if (linha== "prox"){
-			//executacomandos()
+			execCMD(mapa,buffer);
 			//actualiza movimentos()
 		}
 		else {
