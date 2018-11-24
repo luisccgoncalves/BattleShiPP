@@ -35,6 +35,11 @@ static const vector<char> boatType{
 	'F'				//3 - Fragata
 };
 
+//class ponto? pair<int,int>?
+typedef struct {
+	int x, y;
+}xy;
+
 class Boat {
 	//Esta classe pode ser melhorada com herança e polimorfismo
 	int x, y;
@@ -48,11 +53,10 @@ class Boat {
 
 public:
 
-	Boat(int x, int y, bool isAmigo);
+	Boat(int x, int y, bool isAmigo, int bType);
 
 	int getX() const;
 	int getY() const;
-
 
 };
 
@@ -125,22 +129,28 @@ class Map {
 	void storeMapLine(istringstream &iss, int y);
 
 public:
-	bool addBoat(string param);
-	bool addSeaCell(int x, int y);
-	bool addLandCell(int x, int y);
-	bool addHarbour(int x, int y, char c);
-	bool load(string filename);
-	void print(int xOffset, int yOffset);
-	void updateMainHarbour();
+
+	Harbour getMainHarbour();
+	bool	addBoat(string param);
+	bool	addSeaCell(int x, int y);
+	bool	addLandCell(int x, int y);
+	bool	addHarbour(int x, int y, char c);
+	bool	load(string filename);
+	void	print(int xOffset, int yOffset);
+	void	updateMainHarbour();
+
+	xy		getFreeCoordsNear(Harbour porto);
+
 };
 
-void printBanner();
-void intro();
-void printInterface();
-bool isCmdValid(string linha);
-int	getComandosPos(string cmd);
-void execCMD(Map &mapa, stringstream &cmdlist);
+void	printBanner();
+void	intro();
+void	printInterface();
+bool	isCmdValid(string linha);
+int		getBoatType(string param);
+int		getComandosPos(string cmd);
+void	execCMD(Map &mapa, stringstream &cmdlist);
 
-void compraNav(Map &mapa, string cmd);
+void	compraNav(Map &mapa, string cmd);
 
 #endif

@@ -14,7 +14,9 @@ using namespace std;
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
-Boat::Boat(int x, int y, bool isAmigo) :x(x), y(y), isAmigo(isAmigo) {};
+Boat::Boat(int x, int y, bool isAmigo, int bType) :x(x), y(y), isAmigo(isAmigo) , tipo(bType){
+
+}
 
 int Boat::getX() const {
 	return x;
@@ -47,6 +49,7 @@ bool Harbour::isFriend() const {
 bool &Harbour::isMain(){
 	return isPrincipal;
 }
+
 
 //===============================================================================
 //=============================== CLASS LAND ====================================
@@ -84,12 +87,27 @@ int Sea::getPeixe() const{
 //================================ CLASS MAP ====================================
 //===============================================================================
 
+Harbour Map::getMainHarbour() {
+
+	for (auto it : portos)
+		if (it->isMain())
+			return *it;
+
+	return *portos.at(0);
+}
+
 bool Map::addBoat(string param) {
 
-	//get main harbour coords
+	//check boat type
+	int bType=getBoatType(param);
+	if (bType == -1)
+		return false;
+
+	//get main harbouring coords
+	xy free=getFreeCoordsNear(getMainHarbour());
 
 	try {
-		barcos.push_back(new Boat(1, 1, true));
+		barcos.push_back(new Boat(free.x, free.y, true, bType));
 	}
 	catch (const bad_alloc) {
 		return false;
@@ -222,7 +240,7 @@ bool Map::load(string filename) {
 
 void Map::print(int xOffset, int yOffset) {
 
-	static char bFriend='A', bEnemy='a';
+	char bFriend='A', bEnemy='a';
 
 	for (auto it:mar) {
 		for(int xSquare=0;xSquare<2;xSquare++)
@@ -262,7 +280,7 @@ void Map::print(int xOffset, int yOffset) {
 
 	for (auto it : barcos) {
 
-		Consola::setBackgroundColor(Consola::ROXO);
+		Consola::setBackgroundColor(Consola::AMARELO);
 		for (int xSquare = 0; xSquare < 2; xSquare++)
 			for (int ySquare = 0; ySquare < 2; ySquare++) {
 				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
@@ -287,6 +305,29 @@ void Map::updateMainHarbour() {
 		}
 }
 
+xy Map::getFreeCoordsNear(Harbour porto) {
+	xy free;
+	int portoX = porto.getX();
+	int portoY = porto.getY();
+	cout << "(" << portoX << "," << portoY << ")"<<endl;
+	for (auto it : mar) {
+		if (it->getX() >= portoX-1 && it->getX() <= portoX + 1) {
+			if (it->getY() >=portoY-1 && it->getY() <=portoY +1) {
+				free.x = it->getX();
+				free.y = it->getY();
+				cout << "(" << free.x << "," << free.y << ")";
+				//Consola::getch();
+				return free;
+			}
+		}
+	}
+
+
+	//free.x = porto.getX()-1;
+	//free.y = porto.getY();
+
+	//return free;
+}
 //===============================================================================
 //============================== FUNCTIONS ======================================
 //===============================================================================
@@ -372,6 +413,14 @@ bool isCmdValid(string linha) {
 	return false;
 }
 
+int getBoatType(string param) {
+	for (unsigned int i = 0; i < boatType.size(); i++)
+		if (boatType[i] == param.at(0))
+			return i;
+
+	return -1;
+}
+
 int	getComandosPos(string cmd) {
 
 	cmd = cmd.substr(0, cmd.find(" "));
@@ -407,7 +456,6 @@ void compraNav(Map &mapa, string cmd) {
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
 
-	
 	mapa.addBoat(param);
 }
 
@@ -446,8 +494,10 @@ int main() {
 		}
 		else if (linha== "prox"){
 			execCMD(mapa,buffer);
+			buffer.clear();
 			//actualiza movimentos()
 			mapa.print(1, 1);
+			Consola::clrspc(42, 20, 37);
 			Consola::clrspc(2, 22, 77);
 		}
 		else {
