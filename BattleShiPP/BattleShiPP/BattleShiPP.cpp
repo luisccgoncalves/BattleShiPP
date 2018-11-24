@@ -103,9 +103,14 @@ bool Map::addBoat(string param) {
 	if (bType == -1)
 		return false;
 
+	//check if player has enough money
+
 	//get main harbouring coords
 	xy free=getFreeCoordsNear(getMainHarbour());
 
+	if (free.x == -1)
+		return false;
+		
 	try {
 		barcos.push_back(new Boat(free.x, free.y, true, bType));
 	}
@@ -306,28 +311,36 @@ void Map::updateMainHarbour() {
 }
 
 xy Map::getFreeCoordsNear(Harbour porto) {
-	xy free;
+	xy free{-1,-1};
 	int portoX = porto.getX();
 	int portoY = porto.getY();
-	cout << "(" << portoX << "," << portoY << ")"<<endl;
-	for (auto it : mar) {
-		if (it->getX() >= portoX-1 && it->getX() <= portoX + 1) {
-			if (it->getY() >=portoY-1 && it->getY() <=portoY +1) {
-				free.x = it->getX();
-				free.y = it->getY();
-				cout << "(" << free.x << "," << free.y << ")";
-				//Consola::getch();
-				return free;
+
+	for (auto marIt : mar) {
+		if (marIt->getX() >= portoX-1 && marIt->getX() <= portoX + 1) {
+			if (marIt->getY() >=portoY-1 && marIt->getY() <=portoY +1) {
+				if (marIt->getY() == portoY|| marIt->getX()==portoX) { //needed to go from neighbors8 to neighbors4
+					if (barcos.size()) {
+						for (auto barcoIt : barcos) {
+							if (marIt->getX() != barcoIt->getX() || marIt->getY() != barcoIt->getY()) {
+								free.x = marIt->getX();
+								free.y = marIt->getY();
+								return free;
+							}
+						}
+					}
+					else {
+						free.x = marIt->getX();
+						free.y = marIt->getY();
+						return free;
+					}
+				}
 			}
 		}
 	}
 
-
-	//free.x = porto.getX()-1;
-	//free.y = porto.getY();
-
-	//return free;
+	return free;
 }
+
 //===============================================================================
 //============================== FUNCTIONS ======================================
 //===============================================================================
@@ -443,7 +456,6 @@ void execCMD(Map &mapa, stringstream &cmdlist) {
 			compraNav(mapa, cmd);
 			break;
 		case 3:
-			Beep(1000, 1000);
 			break;
 		default:
 			break;
@@ -456,7 +468,9 @@ void compraNav(Map &mapa, string cmd) {
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
 
-	mapa.addBoat(param);
+	if (!mapa.addBoat(param))
+		Beep(1000, 1000);
+
 }
 
 int main() {
@@ -495,7 +509,7 @@ int main() {
 		else if (linha== "prox"){
 			execCMD(mapa,buffer);
 			buffer.clear();
-			//actualiza movimentos()
+			mapa.update();
 			mapa.print(1, 1);
 			Consola::clrspc(42, 20, 37);
 			Consola::clrspc(2, 22, 77);

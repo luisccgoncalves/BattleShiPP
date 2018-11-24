@@ -138,6 +138,7 @@ public:
 	bool	load(string filename);
 	void	print(int xOffset, int yOffset);
 	void	updateMainHarbour();
+	void	update();
 
 	xy		getFreeCoordsNear(Harbour porto);
 
