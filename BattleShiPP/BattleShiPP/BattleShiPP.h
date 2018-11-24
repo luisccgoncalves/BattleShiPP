@@ -53,10 +53,15 @@ class Boat {
 
 public:
 
+	int idade = 0;
+
 	Boat(int x, int y, bool isAmigo, int bType);
 
 	int getX() const;
 	int getY() const;
+
+	void setX(int newX);
+	void setY(int newY);
 
 };
 

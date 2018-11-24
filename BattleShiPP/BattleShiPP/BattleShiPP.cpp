@@ -26,6 +26,14 @@ int Boat::getY() const {
 	return y;
 }
 
+void Boat::setX(int newX) {
+	x = newX;
+}
+
+void Boat::setY(int newY) {
+	y = newY;
+}
+
 //===============================================================================
 //============================= CLASS HARBOUR ===================================
 //===============================================================================
@@ -308,6 +316,14 @@ void Map::updateMainHarbour() {
 			it->isMain() = true;
 			return;
 		}
+}
+
+void Map::update() {
+
+	for (auto it : barcos) {
+		if(it->idade++)				//ONLY FOR TESTING PURPOSES!
+			it->setX(it->getX()-1);
+	}
 }
 
 xy Map::getFreeCoordsNear(Harbour porto) {
