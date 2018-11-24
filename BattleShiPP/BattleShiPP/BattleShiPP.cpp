@@ -84,9 +84,17 @@ int Sea::getPeixe() const{
 //================================ CLASS MAP ====================================
 //===============================================================================
 
-bool Map::addBoat() {
+bool Map::addBoat(string param) {
 
 	//get main harbour coords
+
+	try {
+		barcos.push_back(new Boat(1, 1, true));
+	}
+	catch (const bad_alloc) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -254,6 +262,12 @@ void Map::print(int xOffset, int yOffset) {
 
 	for (auto it : barcos) {
 
+		Consola::setBackgroundColor(Consola::ROXO);
+		for (int xSquare = 0; xSquare < 2; xSquare++)
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+				cout << "1";
+			}
 	}
 	
 	Consola::setBackgroundColor(Consola::PRETO);
@@ -359,6 +373,7 @@ bool isCmdValid(string linha) {
 }
 
 int	getComandosPos(string cmd) {
+
 	cmd = cmd.substr(0, cmd.find(" "));
 	for (unsigned int i = 0; i < Comandos.size(); i++)
 		if (Comandos[i] == cmd)
@@ -388,7 +403,12 @@ void execCMD(Map &mapa, stringstream &cmdlist) {
 }
 
 void compraNav(Map &mapa, string cmd) {
-	mapa.addBoat();
+
+	//discard compranav part
+	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
+
+	
+	mapa.addBoat(param);
 }
 
 int main() {
@@ -418,8 +438,8 @@ int main() {
 		
 		getline(cin, linha);
 		
-		if (linha == "") {
-			Consola::gotoxy(2, 22);
+		if (linha.size()==0 || linha.at(0)==' ') {
+			Consola::clrspc(2, 22, 77);
 		}
 		else if (linha == "sair") {
 			running = false;
@@ -427,6 +447,8 @@ int main() {
 		else if (linha== "prox"){
 			execCMD(mapa,buffer);
 			//actualiza movimentos()
+			mapa.print(1, 1);
+			Consola::clrspc(2, 22, 77);
 		}
 		else {
 
@@ -441,7 +463,7 @@ int main() {
 			}
 
 			cout << '>' << linha;
-			Consola::setTextColor(Consola::BRANCO);
+			Consola::setTextColor(Consola::BRANCO_CLARO);
 			Consola::clrspc(2, 22, 77);
 		}
 	}

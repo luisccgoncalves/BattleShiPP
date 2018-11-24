@@ -28,11 +28,11 @@ static const vector<string> Comandos{
 	"delg"			//17
 };
 
-static const vector<string> boatType{
-	"V",			//Veleiro
-	"G",			//Galeão
-	"E",			//Escuna
-	"F"				//Fragata
+static const vector<char> boatType{
+	'V',			//0 - Veleiro
+	'G',			//1 - Galeão
+	'E',			//2 - Escuna
+	'F'				//3 - Fragata
 };
 
 class Boat {
@@ -125,7 +125,7 @@ class Map {
 	void storeMapLine(istringstream &iss, int y);
 
 public:
-	bool addBoat();
+	bool addBoat(string param);
 	bool addSeaCell(int x, int y);
 	bool addLandCell(int x, int y);
 	bool addHarbour(int x, int y, char c);
