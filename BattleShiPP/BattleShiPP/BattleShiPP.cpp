@@ -269,59 +269,6 @@ bool Map::load(string filename) {
 	return true;
 }
 
-void Map::print(int xOffset, int yOffset) {
-
-	char bFriend='A', bEnemy='a';
-
-	for (auto it:mar) {
-		for(int xSquare=0;xSquare<2;xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-					Consola::setBackgroundColor(Consola::AZUL);
-				else
-					Consola::setBackgroundColor(Consola::AZUL_CLARO);
-				cout << ".";
-			}
-	}
-
-	for (auto it : terra) {
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-					Consola::setBackgroundColor(Consola::VERDE);
-				else
-					Consola::setBackgroundColor(Consola::VERDE_CLARO);
-				cout << "+";
-			}
-	}
-
-	for (auto it : portos) {
-		
-		Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				cout << (it->isFriend() ? bFriend : bEnemy);
-			}
-		bEnemy++;
-		bFriend++;
-	}
-
-	for (auto it : barcos) {
-
-		Consola::setBackgroundColor(Consola::AMARELO);
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				cout << "1";
-			}
-	}
-	
-	Consola::setBackgroundColor(Consola::PRETO);
-}
-
 void Map::updateMainHarbour() {
 
 	for (auto it : portos)
@@ -562,6 +509,59 @@ void compraNav(Map &mapa, string cmd) {
 	mapa.addBoat(param);
 }
 
+void printMap(int xOffset, int yOffset, const Map &printThis) {
+
+	char bFriend = 'A', bEnemy = 'a';
+
+	for (auto it : printThis.mar) {
+		for (int xSquare = 0; xSquare < 2; xSquare++)
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
+					Consola::setBackgroundColor(Consola::AZUL);
+				else
+					Consola::setBackgroundColor(Consola::AZUL_CLARO);
+				cout << ".";
+			}
+	}
+
+	for (auto it : printThis.terra) {
+		for (int xSquare = 0; xSquare < 2; xSquare++)
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
+					Consola::setBackgroundColor(Consola::VERDE);
+				else
+					Consola::setBackgroundColor(Consola::VERDE_CLARO);
+				cout << "+";
+			}
+	}
+
+	for (auto it : printThis.portos) {
+
+		Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
+		for (int xSquare = 0; xSquare < 2; xSquare++)
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+				cout << (it->isFriend() ? bFriend : bEnemy);
+			}
+		bEnemy++;
+		bFriend++;
+	}
+
+	for (auto it : printThis.barcos) {
+
+		Consola::setBackgroundColor(Consola::AMARELO);
+		for (int xSquare = 0; xSquare < 2; xSquare++)
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+				cout << "1";
+			}
+	}
+
+	Consola::setBackgroundColor(Consola::PRETO);
+}
+
 int main() {
 
 	srand((unsigned int)time(NULL));
@@ -577,12 +577,11 @@ int main() {
 	Consola::clrscr();
 		
 	printInterface();
-	mapa.print(1,1);
+	printMap(1,1,mapa);
 	Consola::gotoxy(1, 22);
 	cout << '>';
 
 	bool running = true;
-	//string linha;
 	stringstream buffer;
 
 	while (running) {
@@ -601,7 +600,7 @@ int main() {
 			execCMD(mapa,buffer);
 			buffer.clear();
 			mapa.update();
-			mapa.print(1, 1);
+			printMap(1, 1, mapa);
 			Consola::clrspc(42, 20, 37);
 			Consola::clrspc(2, 22, 77);
 		}

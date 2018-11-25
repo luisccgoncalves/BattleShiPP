@@ -137,14 +137,15 @@ class Map {
 	int probsereias;
 	int prombotim;
 
-	vector<Sea*> mar;
-	vector<Land*> terra;
-	vector<Harbour*> portos;
-	vector<Boat*> barcos;
+
 
 	void storeMapLine(istringstream &iss, int y);
 
 public:
+	vector<Sea*> mar;
+	vector<Land*> terra;
+	vector<Harbour*> portos;
+	vector<Boat*> barcos;
 
 	Harbour getMainHarbour();
 	bool	addBoat(string param);
@@ -152,14 +153,13 @@ public:
 	bool	addLandCell(int x, int y);
 	bool	addHarbour(int x, int y, char c);
 	bool	load(string filename);
-	void	print(int xOffset, int yOffset);
 	void	updateMainHarbour();
 	void	update();
 	bool	isWater(int x, int y);
 	bool	hasBoat(int x, int y);
 
 	xy		getFreeCoordsNear(Harbour porto);
-
+	
 };
 
 void	printBanner();
@@ -171,5 +171,6 @@ int		getComandosPos(string cmd);
 void	execCMD(Map &mapa, stringstream &cmdlist);
 
 void	compraNav(Map &mapa, string cmd);
+void	printMap(int xOffset, int yOffset, const Map &printThis);
 
 #endif
