@@ -35,6 +35,13 @@ static const vector<char> boatType{
 	'F'				//3 - Fragata
 };
 
+enum Direction {
+	North=0,
+	East,
+	South,
+	West
+};
+
 //class ponto? pair<int,int>?
 typedef struct {
 	int x, y;
@@ -42,26 +49,28 @@ typedef struct {
 
 class Boat {
 	//Esta classe pode ser melhorada com herança e polimorfismo
-	int x, y;
-	bool isAmigo;
-	int tipo;	//sub-classe?
-	int preco;
-	int soldados;
-	int agua;
-	int peixe;
-	int peixeMax;
+	int		x, y;
+	bool	isAmigo;
+	bool	justSpawned;
+	int		tipo;	//sub-classe?
+	int		preco;
+	int		soldados;
+	int		agua;
+	int		peixe;
+	int		peixeMax;
 
 public:
 
-	int idade = 0;
-
-	Boat(int x, int y, bool isAmigo, int bType);
+	Boat(int x, int y, bool isAmigo, int bType, bool justSpawned=false);
 
 	int getX() const;
 	int getY() const;
 
 	void setX(int newX);
 	void setY(int newY);
+
+	void removeSpawnDizziness();
+	bool canMove();
 
 };
 
@@ -144,6 +153,8 @@ public:
 	void	print(int xOffset, int yOffset);
 	void	updateMainHarbour();
 	void	update();
+	bool	isWater();
+	bool	hasBoat();
 
 	xy		getFreeCoordsNear(Harbour porto);
 

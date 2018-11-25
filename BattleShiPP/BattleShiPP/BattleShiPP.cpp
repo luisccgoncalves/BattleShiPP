@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
+#include <time.h>
 
 using namespace std;
 
@@ -14,7 +15,8 @@ using namespace std;
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
-Boat::Boat(int x, int y, bool isAmigo, int bType) :x(x), y(y), isAmigo(isAmigo) , tipo(bType){
+Boat::Boat(int x, int y, bool isAmigo, int bType, bool justSpawned) :
+			x(x), y(y), isAmigo(isAmigo) , tipo(bType), justSpawned(justSpawned){
 
 }
 
@@ -32,6 +34,21 @@ void Boat::setX(int newX) {
 
 void Boat::setY(int newY) {
 	y = newY;
+}
+
+void Boat::removeSpawnDizziness() {
+
+	justSpawned = false;
+}
+
+bool Boat::canMove() {
+
+	if (justSpawned) {
+		removeSpawnDizziness();
+		return false;
+	}
+	else
+		return true;
 }
 
 //===============================================================================
@@ -120,7 +137,7 @@ bool Map::addBoat(string param) {
 		return false;
 		
 	try {
-		barcos.push_back(new Boat(free.x, free.y, true, bType));
+		barcos.push_back(new Boat(free.x, free.y, true, bType, true));
 	}
 	catch (const bad_alloc) {
 		return false;
@@ -321,8 +338,24 @@ void Map::updateMainHarbour() {
 void Map::update() {
 
 	for (auto it : barcos) {
-		if(it->idade++)				//ONLY FOR TESTING PURPOSES!
-			it->setX(it->getX()-1);
+		if (it->canMove()) {
+			switch (Direction(rand() % 4)) {
+			case North:
+				it->setY(it->getY()-1);
+				break;
+			case East:
+				it->setX(it->getX() + 1);
+				break;
+			case South:
+				it->setY(it->getY() + 1);
+				break;
+			case West:
+				it->setX(it->getX() - 1);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }
 
@@ -490,6 +523,8 @@ void compraNav(Map &mapa, string cmd) {
 }
 
 int main() {
+
+	srand(time(NULL));
 
 	Map mapa;
 
