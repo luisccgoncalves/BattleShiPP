@@ -72,8 +72,6 @@ public:
 	void removeSpawnDizziness();
 	bool canMove();
 
-	void move(Direction d);
-
 };
 
 class Harbour {
