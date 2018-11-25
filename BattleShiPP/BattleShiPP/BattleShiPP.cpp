@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <iterator>
-#include <time.h>
+#include <ctime>
 
 using namespace std;
 
@@ -50,6 +50,7 @@ bool Boat::canMove() {
 	else
 		return true;
 }
+
 
 //===============================================================================
 //============================= CLASS HARBOUR ===================================
@@ -341,22 +342,50 @@ void Map::update() {
 		if (it->canMove()) {
 			switch (Direction(rand() % 4)) {
 			case North:
-				it->setY(it->getY()-1);
+				if(isWater(it->getX(), it->getY() - 1))
+					if(!hasBoat(it->getX(), it->getY() - 1))
+						it->setY(it->getY() - 1);
 				break;
 			case East:
-				it->setX(it->getX() + 1);
+				if (isWater(it->getX() + 1, it->getY()))
+					if (!hasBoat(it->getX() + 1, it->getY()))
+						it->setX(it->getX() + 1);
 				break;
 			case South:
-				it->setY(it->getY() + 1);
+				if (isWater(it->getX(), it->getY() + 1))
+					if (!hasBoat(it->getX(), it->getY() + 1))
+						it->setY(it->getY() + 1);
 				break;
 			case West:
-				it->setX(it->getX() - 1);
+				if (isWater(it->getX() - 1, it->getY()))
+					if (!hasBoat(it->getX() - 1, it->getY()))
+						it->setX(it->getX() - 1);
 				break;
 			default:
 				break;
 			}
 		}
 	}
+}
+
+bool Map::isWater(int x, int y) {
+
+	for (auto it : mar) {
+		if (it->getX() == x && it->getY() == y)
+			return true;
+	}
+
+	return false;
+}
+
+bool Map::hasBoat(int x, int y) {
+
+	for (auto it : barcos) {
+		if (it->getX() == x && it->getY() == y)
+			return true;
+	}
+
+	return false;
 }
 
 xy Map::getFreeCoordsNear(Harbour porto) {
@@ -524,7 +553,7 @@ void compraNav(Map &mapa, string cmd) {
 
 int main() {
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	Map mapa;
 

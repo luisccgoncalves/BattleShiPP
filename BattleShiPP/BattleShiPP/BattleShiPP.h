@@ -72,6 +72,8 @@ public:
 	void removeSpawnDizziness();
 	bool canMove();
 
+	void move(Direction d);
+
 };
 
 class Harbour {
@@ -153,8 +155,8 @@ public:
 	void	print(int xOffset, int yOffset);
 	void	updateMainHarbour();
 	void	update();
-	bool	isWater();
-	bool	hasBoat();
+	bool	isWater(int x, int y);
+	bool	hasBoat(int x, int y);
 
 	xy		getFreeCoordsNear(Harbour porto);
 
