@@ -137,17 +137,23 @@ class Map {
 	int probsereias;
 	int prombotim;
 
-
-
-	void storeMapLine(istringstream &iss, int y);
-
-public:
 	vector<Sea*> mar;
 	vector<Land*> terra;
 	vector<Harbour*> portos;
 	vector<Boat*> barcos;
 
-	Harbour getMainHarbour();
+	void storeMapLine(istringstream &iss, int y);
+
+public:
+
+	~Map();
+
+	Harbour				getMainHarbour();
+	vector<Sea*>		getMar() const;
+	vector<Land*>		getTerra() const;
+	vector<Harbour*>	getPortos() const;
+	vector<Boat*>		getBarcos() const;
+
 	bool	addBoat(string param);
 	bool	addSeaCell(int x, int y);
 	bool	addLandCell(int x, int y);

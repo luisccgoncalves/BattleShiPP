@@ -113,6 +113,41 @@ int Sea::getPeixe() const{
 //================================ CLASS MAP ====================================
 //===============================================================================
 
+Map::~Map() {
+
+	for (auto it : mar) {
+		delete it;
+	}
+
+	for (auto it : terra) {
+		delete it;
+	}
+
+	for (auto it : portos) {
+		delete it;
+	}
+
+	for (auto it : barcos) {
+		delete it;
+	}
+}
+
+vector<Sea*> Map::getMar() const {
+	return mar;
+}
+
+vector<Land*> Map::getTerra() const {
+	return terra;
+}
+
+vector<Harbour*> Map::getPortos() const {
+	return portos;
+}
+
+vector<Boat*> Map::getBarcos() const {
+	return barcos;
+}
+
 Harbour Map::getMainHarbour() {
 
 	for (auto it : portos)
@@ -513,7 +548,7 @@ void printMap(int xOffset, int yOffset, const Map &printThis) {
 
 	char bFriend = 'A', bEnemy = 'a';
 
-	for (auto it : printThis.mar) {
+	for (auto it : printThis.getMar()) {
 		for (int xSquare = 0; xSquare < 2; xSquare++)
 			for (int ySquare = 0; ySquare < 2; ySquare++) {
 				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
@@ -525,7 +560,7 @@ void printMap(int xOffset, int yOffset, const Map &printThis) {
 			}
 	}
 
-	for (auto it : printThis.terra) {
+	for (auto it : printThis.getTerra()) {
 		for (int xSquare = 0; xSquare < 2; xSquare++)
 			for (int ySquare = 0; ySquare < 2; ySquare++) {
 				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
@@ -537,7 +572,7 @@ void printMap(int xOffset, int yOffset, const Map &printThis) {
 			}
 	}
 
-	for (auto it : printThis.portos) {
+	for (auto it : printThis.getPortos()) {
 
 		Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
 		for (int xSquare = 0; xSquare < 2; xSquare++)
@@ -549,7 +584,7 @@ void printMap(int xOffset, int yOffset, const Map &printThis) {
 		bFriend++;
 	}
 
-	for (auto it : printThis.barcos) {
+	for (auto it : printThis.getBarcos()) {
 
 		Consola::setBackgroundColor(Consola::AMARELO);
 		for (int xSquare = 0; xSquare < 2; xSquare++)
