@@ -340,29 +340,43 @@ void Map::update() {
 
 	for (auto it : barcos) {
 		if (it->canMove()) {
-			switch (Direction(rand() % 4)) {
-			case North:
-				if(isWater(it->getX(), it->getY() - 1))
-					if(!hasBoat(it->getX(), it->getY() - 1))
-						it->setY(it->getY() - 1);
-				break;
-			case East:
-				if (isWater(it->getX() + 1, it->getY()))
-					if (!hasBoat(it->getX() + 1, it->getY()))
-						it->setX(it->getX() + 1);
-				break;
-			case South:
-				if (isWater(it->getX(), it->getY() + 1))
-					if (!hasBoat(it->getX(), it->getY() + 1))
-						it->setY(it->getY() + 1);
-				break;
-			case West:
-				if (isWater(it->getX() - 1, it->getY()))
-					if (!hasBoat(it->getX() - 1, it->getY()))
-						it->setX(it->getX() - 1);
-				break;
-			default:
-				break;
+			bool moved = false;
+			int tries = 0;
+			while (!moved) {
+				switch (Direction(rand() % 4)) {
+				case North:
+					if (isWater(it->getX(), it->getY() - 1))
+						if (!hasBoat(it->getX(), it->getY() - 1)) {
+							it->setY(it->getY() - 1);
+							moved = true;
+						}
+					break;
+				case East:
+					if (isWater(it->getX() + 1, it->getY()))
+						if (!hasBoat(it->getX() + 1, it->getY())){
+							it->setX(it->getX() + 1);
+							moved = true;
+						}
+					break;
+				case South:
+					if (isWater(it->getX(), it->getY() + 1))
+						if (!hasBoat(it->getX(), it->getY() + 1)){
+							it->setY(it->getY() + 1);
+							moved = true;
+						}
+					break;
+				case West:
+					if (isWater(it->getX() - 1, it->getY()))
+						if (!hasBoat(it->getX() - 1, it->getY())){
+							it->setX(it->getX() - 1);
+							moved = true;
+						}
+					break;
+				default:
+					break;
+				}
+				if (tries++>10) //quits moving after 10 tries
+					moved = true;
 			}
 		}
 	}
@@ -440,7 +454,6 @@ void intro() {
 		Consola::gotoxy(0, i);
 		printBanner();
 		Sleep(80);
-		//Beep(50*i, 100);
 		if (i)Consola::clrscr();
 	}
 	
@@ -546,9 +559,7 @@ void compraNav(Map &mapa, string cmd) {
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
 
-	if (!mapa.addBoat(param))
-		Beep(1000, 1000);
-
+	mapa.addBoat(param);
 }
 
 int main() {
