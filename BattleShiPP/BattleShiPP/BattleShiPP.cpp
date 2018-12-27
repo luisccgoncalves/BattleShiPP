@@ -326,28 +326,28 @@ void Map::update() {
 			int tries = 0;
 			while (!moved) {
 				switch (Direction(rand() % 4)) {
-				case North:
+				case Direction::North:
 					if (isWater(it->getX(), it->getY() - 1))
 						if (!hasBoat(it->getX(), it->getY() - 1)) {
 							it->setY(it->getY() - 1);
 							moved = true;
 						}
 					break;
-				case East:
+				case Direction::East:
 					if (isWater(it->getX() + 1, it->getY()))
 						if (!hasBoat(it->getX() + 1, it->getY())){
 							it->setX(it->getX() + 1);
 							moved = true;
 						}
 					break;
-				case South:
+				case Direction::South:
 					if (isWater(it->getX(), it->getY() + 1))
 						if (!hasBoat(it->getX(), it->getY() + 1)){
 							it->setY(it->getY() + 1);
 							moved = true;
 						}
 					break;
-				case West:
+				case Direction::West:
 					if (isWater(it->getX() - 1, it->getY()))
 						if (!hasBoat(it->getX() - 1, it->getY())){
 							it->setX(it->getX() - 1);

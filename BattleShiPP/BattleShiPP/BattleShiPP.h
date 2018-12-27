@@ -35,7 +35,7 @@ static const vector<char> boatType{
 	'F'				//3 - Fragata
 };
 
-enum Direction {
+enum class Direction {
 	North=0,
 	East,
 	South,
