@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Cell.h"
+
 using namespace std;
 
 static const vector<string> Comandos{ 
@@ -39,7 +41,8 @@ enum class Direction {
 	North=0,
 	East,
 	South,
-	West
+	West,
+	ENUM_SIZE
 };
 
 //class ponto? pair<int,int>?
@@ -74,50 +77,6 @@ public:
 
 };
 
-class Harbour {
-
-	int x, y;
-	bool isAmigo;
-	bool isPrincipal;
-
-public:
-
-	Harbour(int x, int y, bool isAmigo);
-
-	int getX() const;
-	int getY() const;
-	bool isFriend()const;
-	bool &isMain();
-
-};
-
-class Land {
-
-	int x, y;
-
-public:
-
-	Land(int x, int y);
-
-	int getX() const;
-	int getY() const;
-
-};
-
-class Sea {
-
-	int x, y;
-	int peixe;
-
-public:
-
-	Sea(int x, int y);
-
-	int getX() const;
-	int getY() const;
-	int getPeixe() const;
-
-};
 
 class Map {
 
@@ -135,15 +94,14 @@ class Map {
 	int probsereias;
 	int prombotim;
 
-	vector<Sea*> mar;
-	vector<Land*> terra;
-	vector<Harbour*> portos;
-	vector<Boat*> barcos;
+	//vector<Sea*> mar;
+	//vector<Land*> terra;
+	//vector<Harbour*> portos;
+	//vector<Boat*> barcos;
+	vector<vector<Cell*>> mapa;
 
-	void storeMapLine(istringstream &iss, int y);
 
 public:
-
 	~Map();
 
 	Harbour				getMainHarbour();
@@ -152,10 +110,10 @@ public:
 	vector<Harbour*>	getPortos() const;
 	vector<Boat*>		getBarcos() const;
 
-	bool	addBoat(string param);
-	bool	addSeaCell(int x, int y);
-	bool	addLandCell(int x, int y);
-	bool	addHarbour(int x, int y, char c);
+	//bool	addBoat(string param);
+	//bool	addSeaCell(int x, int y);
+	//bool	addLandCell(int x, int y);
+	//bool	addHarbour(int x, int y, char c);
 	bool	load(string filename);
 	void	updateMainHarbour();
 	void	update();

@@ -52,62 +52,7 @@ bool Boat::canMove() {
 }
 
 
-//===============================================================================
-//============================= CLASS HARBOUR ===================================
-//===============================================================================
 
-Harbour::Harbour(int x, int y, bool isAmigo) :x(x), y(y), isAmigo(isAmigo) {
-	isPrincipal = false;
-};
-
-int Harbour::getX() const {
-	return x;
-}
-
-int Harbour::getY() const {
-	return y;
-}
-
-bool Harbour::isFriend() const {
-	return isAmigo;
-}
-
-bool &Harbour::isMain(){
-	return isPrincipal;
-}
-
-
-//===============================================================================
-//=============================== CLASS LAND ====================================
-//===============================================================================
-
-Land::Land(int x, int y) : x(x), y(y) {};
-
-int Land::getX() const {
-	return x;
-}
-
-int Land::getY() const {
-	return y;
-}
-
-//===============================================================================
-//================================ CLASS SEA ====================================
-//===============================================================================
-
-Sea::Sea(int x, int y) :x(x), y(y), peixe(0){}
-
-int Sea::getX() const {
-	return x;
-}
-
-int Sea::getY() const {
-	return y;
-}
-
-int Sea::getPeixe() const{
-	return peixe;
-}
 
 //===============================================================================
 //================================ CLASS MAP ====================================
@@ -182,61 +127,41 @@ bool Map::addBoat(string param) {
 	return true;
 }
 
-bool Map::addSeaCell(int x, int y) {
+//bool Map::addSeaCell(int x, int y) {
+//
+//	try {
+//		mar.push_back(new Sea(x, y));
+//	}
+//	catch (const bad_alloc) {
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	try {
-		mar.push_back(new Sea(x, y));
-	}
-	catch (const bad_alloc) {
-		return false;
-	}
+//bool Map::addLandCell(int x, int y) {
+//
+//	try {
+//		terra.push_back(new Land(x, y));
+//	}
+//	catch (const bad_alloc) {
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	return true;
-}
-
-bool Map::addLandCell(int x, int y) {
-
-	try {
-		terra.push_back(new Land(x, y));
-	}
-	catch (const bad_alloc) {
-		return false;
-	}
-
-	return true;
-}
-
-bool Map::addHarbour(int x, int y, char c) {
-
-	try {
-		portos.push_back(new Harbour(x, y, c < 'Z'));
-	}
-	catch (const bad_alloc) {
-		return false;
-	}
-
-	return true;
-}
-
-void Map::storeMapLine(istringstream &iss, int y) {
-
-	char c;
-
-	for (int x = 0; iss >> c; x++) {
-
-		switch (c) {
-		case '.':
-			addSeaCell(x,y);
-			break;
-		case '+':
-			addLandCell(x, y);
-			break;
-		default:
-			addHarbour(x, y, c);
-			break;
-		}
-	}
-}
+//bool Map::addHarbour(int x, int y, char c) {
+//
+//	try {
+//		portos.push_back(new Harbour(x, y, c < 'Z'));
+//	}
+//	catch (const bad_alloc) {
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 bool Map::load(string filename) {
 
@@ -247,7 +172,35 @@ bool Map::load(string filename) {
 		return false;
 	}
 
-	for (int i = 0, y=0; !map.eof(); i++) {
+	for (int i = 0; i < 2; i++) {
+		getline(map, line);
+		istringstream iss(line);
+		if(i==0)
+			iss >> buff >> lin;
+		else
+			iss >> buff >> col;
+	}
+
+	for (int y = 0; y < lin; y++) {
+		mapa.push_back(vector<Cell*>());
+		getline(map, line);
+
+		for (int x = 0; x < col; x++) {
+			switch (line[x]) {
+			case '.':
+				mapa[y].push_back(new Sea(x, y));
+				break;
+			case '+':
+				mapa[y].push_back(new Land(x, y));
+				break;
+			default:
+				mapa[y].push_back(new Harbour(x, y, line[x]<='Z'));
+				break;
+			}
+		}
+	}
+	
+	for (int i = 0; !map.eof(); i++) {
 		getline(map, line);
 		istringstream iss(line);
 
@@ -295,7 +248,7 @@ bool Map::load(string filename) {
 			iss >> buff >> prombotim;
 			break;			
 		default:
-			storeMapLine(iss, y++);
+			break;
 		}
 	}
 
@@ -306,16 +259,24 @@ bool Map::load(string filename) {
 
 void Map::updateMainHarbour() {
 
-	for (auto it : portos)
-		if (it->isFriend())
-			if (it->isMain())
-				return;
-
-	for (auto it : portos)
-		if (it->isFriend()) {
-			it->isMain() = true;
-			return;
+	//Searches for a main harbour
+	for (int y = 0; y < lin; y++) {
+		for (int x = 0; x < col; x++) {
+			if (mapa[y][x]->isFriend())
+				if (mapa[y][x]->isMain())
+					return;						//If one is found, returns
 		}
+	}
+
+	//Searches for a friendly harbour
+	for (int y = 0; y < lin; y++) {
+		for (int x = 0; x < col; x++) {
+			if (mapa[y][x]->isFriend()) {
+				mapa[y][x]->isMain() = true;	//The first one found is promoted to main harbour
+				return;
+			}
+		}
+	}
 }
 
 void Map::update() {
@@ -325,7 +286,7 @@ void Map::update() {
 			bool moved = false;
 			int tries = 0;
 			while (!moved) {
-				switch (Direction(rand() % 4)) {
+				switch (Direction(rand() % (int)Direction::ENUM_SIZE)) {
 				case Direction::North:
 					if (isWater(it->getX(), it->getY() - 1))
 						if (!hasBoat(it->getX(), it->getY() - 1)) {
@@ -546,53 +507,47 @@ void compraNav(Map &mapa, string cmd) {
 
 void printMap(int xOffset, int yOffset, const Map &printThis) {
 
-	char bFriend = 'A', bEnemy = 'a';
-
-	for (auto it : printThis.getMar()) {
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-					Consola::setBackgroundColor(Consola::AZUL);
-				else
-					Consola::setBackgroundColor(Consola::AZUL_CLARO);
-				cout << ".";
-			}
-	}
-
-	for (auto it : printThis.getTerra()) {
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-					Consola::setBackgroundColor(Consola::VERDE);
-				else
-					Consola::setBackgroundColor(Consola::VERDE_CLARO);
-				cout << "+";
-			}
-	}
-
-	for (auto it : printThis.getPortos()) {
-
-		Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				cout << (it->isFriend() ? bFriend : bEnemy);
-			}
-		bEnemy++;
-		bFriend++;
-	}
-
-	for (auto it : printThis.getBarcos()) {
-
-		Consola::setBackgroundColor(Consola::AMARELO);
-		for (int xSquare = 0; xSquare < 2; xSquare++)
-			for (int ySquare = 0; ySquare < 2; ySquare++) {
-				Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-				cout << "1";
-			}
-	}
+	//char bFriend = 'A', bEnemy = 'a';
+	//for (auto it : printThis.getMar()) {
+	//	for (int xSquare = 0; xSquare < 2; xSquare++)
+	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
+	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+	//			if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
+	//				Consola::setBackgroundColor(Consola::AZUL);
+	//			else
+	//				Consola::setBackgroundColor(Consola::AZUL_CLARO);
+	//			cout << ".";
+	//		}
+	//}
+	//for (auto it : printThis.getTerra()) {
+	//	for (int xSquare = 0; xSquare < 2; xSquare++)
+	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
+	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+	//			if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
+	//				Consola::setBackgroundColor(Consola::VERDE);
+	//			else
+	//				Consola::setBackgroundColor(Consola::VERDE_CLARO);
+	//			cout << "+";
+	//		}
+	//}
+	//for (auto it : printThis.getPortos()) {
+	//	Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
+	//	for (int xSquare = 0; xSquare < 2; xSquare++)
+	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
+	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+	//			cout << (it->isFriend() ? bFriend : bEnemy);
+	//		}
+	//	bEnemy++;
+	//	bFriend++;
+	//}
+	//for (auto it : printThis.getBarcos()) {
+	//	Consola::setBackgroundColor(Consola::AMARELO);
+	//	for (int xSquare = 0; xSquare < 2; xSquare++)
+	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
+	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
+	//			cout << "1";
+	//		}
+	//}
 
 	Consola::setBackgroundColor(Consola::PRETO);
 }
