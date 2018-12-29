@@ -383,7 +383,7 @@ void Map::updateMainHarbour() {
 //============================== FUNCTIONS ======================================
 //===============================================================================
 
-void printBanner() {
+void UI::printBanner() {
 
 	cout << "  ____        _   _   _       _____ _     _ _____  _____  " << endl;
 	cout << " |  _ \\      | | | | | |     / ____| |   (_)  __ \\|  __ \\ " << endl;
@@ -394,7 +394,7 @@ void printBanner() {
 
 }
 
-void intro() {
+void UI::intro() {
 
 	for (int i = 14; i >= 0; i--) {
 		Consola::gotoxy(0, i);
@@ -405,7 +405,7 @@ void intro() {
 	
 }
 
-void printInterface() {
+void UI::printInterface() {
 
 	for (int x = 0; x < 80; x++) {
 		for (int y = 0; y < 24; y++) {
@@ -449,7 +449,7 @@ void printInterface() {
 	}
 }
 
-bool isCmdValid(string linha) {
+bool UI::isCmdValid(string linha) {
 
 	istringstream iss(linha);
 
@@ -463,7 +463,7 @@ bool isCmdValid(string linha) {
 	return false;
 }
 
-int getBoatType(string param) {
+int UI::getBoatType(string param) {
 	for (unsigned int i = 0; i < boatType.size(); i++)
 		if (boatType[i] == param.at(0))
 			return i;
@@ -471,7 +471,7 @@ int getBoatType(string param) {
 	return -1;
 }
 
-int	getComandosPos(string cmd) {
+int	UI::getComandosPos(string cmd) {
 
 	cmd = cmd.substr(0, cmd.find(" "));
 	for (unsigned int i = 0; i < Comandos.size(); i++)
@@ -481,7 +481,7 @@ int	getComandosPos(string cmd) {
 	return -1;
 }
 
-void execCMD(Map &mapa, stringstream &cmdlist) {
+void UI::execCMD(Map &mapa, stringstream &cmdlist) {
 
 	string cmd;
 	//cout << cmdlist.str();
@@ -500,7 +500,7 @@ void execCMD(Map &mapa, stringstream &cmdlist) {
 	}
 }
 
-void compraNav(Map &mapa, string cmd) {
+void UI::compraNav(Map &mapa, string cmd) {
 
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
@@ -508,7 +508,7 @@ void compraNav(Map &mapa, string cmd) {
 	mapa.addBoat(param);
 }
 
-void printMap(int xOffset, int yOffset, const Map &printThis) {
+void UI::printMap(int xOffset, int yOffset, const Map &printThis) {
 
 	//A princípio foi feita uma abordagem com downcasting e dynamic_cast
 	//a professora Maria Correia sugeriu uma função para obter o caractere a imprimir
@@ -536,6 +536,7 @@ int main() {
 	srand((unsigned int)time(NULL));
 
 	Map mapa;
+	UI ui;
 
 	mapa.load("map.txt");
 
@@ -545,8 +546,8 @@ int main() {
 	//intro();
 	Consola::clrscr();
 		
-	printInterface();
-	printMap(1,1,mapa);
+	ui.printInterface();
+	ui.printMap(1,1,mapa);
 	Consola::gotoxy(1, 22);
 	cout << '>';
 
@@ -566,10 +567,10 @@ int main() {
 			running = false;
 		}
 		else if (linha== "prox"){
-			execCMD(mapa,buffer);
+			ui.execCMD(mapa,buffer);
 			buffer.clear();
 			//mapa.update();
-			printMap(1, 1, mapa);
+			ui.printMap(1, 1, mapa);
 			Consola::clrspc(42, 20, 37);
 			Consola::clrspc(2, 22, 77);
 		}
@@ -577,7 +578,7 @@ int main() {
 
 			Consola::clrspc(42, 20, 37);
 
-			if (isCmdValid(linha)) {
+			if (ui.isCmdValid(linha)) {
 				buffer << linha << endl;
 				Consola::setTextColor(Consola::VERDE_CLARO);
 			}

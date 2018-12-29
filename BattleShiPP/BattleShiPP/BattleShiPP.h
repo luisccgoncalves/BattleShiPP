@@ -127,15 +127,20 @@ public:
 	
 };
 
-void	printBanner();
-void	intro();
-void	printInterface();
-bool	isCmdValid(string linha);
-int		getBoatType(string param);
-int		getComandosPos(string cmd);
-void	execCMD(Map &mapa, stringstream &cmdlist);
 
-void	compraNav(Map &mapa, string cmd);
-void	printMap(int xOffset, int yOffset, const Map &printThis);
 
+class UI {
+
+public:
+	void	printBanner();
+	void	intro();
+	void	printInterface();
+	bool	isCmdValid(string linha);
+	int		getBoatType(string param);
+	int		getComandosPos(string cmd);
+	void	execCMD(Map &mapa, stringstream &cmdlist);
+
+	void	compraNav(Map &mapa, string cmd);
+	void	printMap(int xOffset, int yOffset, const Map &printThis);
+};
 #endif
