@@ -58,71 +58,83 @@ bool Boat::canMove() {
 //================================ CLASS MAP ====================================
 //===============================================================================
 
-Map::~Map() {
+//Map::~Map() {
+//
+//	for (auto it : mar) {
+//		delete it;
+//	}
+//
+//	for (auto it : terra) {
+//		delete it;
+//	}
+//
+//	for (auto it : portos) {
+//		delete it;
+//	}
+//
+//	for (auto it : barcos) {
+//		delete it;
+//	}
+//}
+//
+//vector<Sea*> Map::getMar() const {
+//	return mar;
+//}
+//
+//vector<Land*> Map::getTerra() const {
+//	return terra;
+//}
+//
+//vector<Harbour*> Map::getPortos() const {
+//	return portos;
+//}
+//
+//vector<Boat*> Map::getBarcos() const {
+//	return barcos;
+//}
+//
+//Harbour Map::getMainHarbour() {
+//
+//	for (auto it : portos)
+//		if (it->isMain())
+//			return *it;
+//
+//	return *portos.at(0);
+//}
 
-	for (auto it : mar) {
-		delete it;
-	}
-
-	for (auto it : terra) {
-		delete it;
-	}
-
-	for (auto it : portos) {
-		delete it;
-	}
-
-	for (auto it : barcos) {
-		delete it;
-	}
+Cell* Map::getCell(int x, int y) const {
+	return mapa[y][x];
 }
 
-vector<Sea*> Map::getMar() const {
-	return mar;
+int Map::getLin() const {
+	return lin;
 }
 
-vector<Land*> Map::getTerra() const {
-	return terra;
-}
-
-vector<Harbour*> Map::getPortos() const {
-	return portos;
-}
-
-vector<Boat*> Map::getBarcos() const {
-	return barcos;
-}
-
-Harbour Map::getMainHarbour() {
-
-	for (auto it : portos)
-		if (it->isMain())
-			return *it;
-
-	return *portos.at(0);
+int Map::getCol() const {
+	return col;
 }
 
 bool Map::addBoat(string param) {
 
-	//check boat type
-	int bType=getBoatType(param);
-	if (bType == -1)
-		return false;
+	////check boat type
+	//int bType=getBoatType(param);
+	//if (bType == -1)
+	//	return false;
 
-	//check if player has enough money
+	////check if player has enough money
 
-	//get main harbouring coords
-	xy free=getFreeCoordsNear(getMainHarbour());
+	////get main harbouring coords
+	//xy free=getFreeCoordsNear(getMainHarbour());
 
-	if (free.x == -1)
-		return false;
-		
-	try {
-		barcos.push_back(new Boat(free.x, free.y, true, bType, true));
-	}
-	catch (const bad_alloc) {
-		return false;
-	}
+	//if (free.x == -1)
+	//	return false;
+	//	
+	//try {
+	//	barcos.push_back(new Boat(free.x, free.y, true, bType, true));
+	//}
+	//catch (const bad_alloc) {
+	//	return false;
+	//}
 
 	return true;
 }
@@ -206,45 +218,39 @@ bool Map::load(string filename) {
 
 		switch (i) {
 		case 0:
-			iss >> buff >> lin;
-			break;
-		case 1:
-			iss >> buff >> col;
-			break;
-		case 2:
 			iss >> buff >> moedas;
 			break;
-		case 3:
+		case 1:
 			iss >> buff >> probpirata;
 			break;
-		case 4:
+		case 2:
 			iss >> buff >> preconavio;
 			break;
-		case 5:
+		case 3:
 			iss >> buff >> precosoldado;
 			break;
-		case 6:
+		case 4:
 			iss >> buff >> precovendpeixe;
 			break;
-		case 7:
+		case 5:
 			iss >> buff >> precocompmercad;
 			break;
-		case 8:
+		case 6:
 			iss >> buff >> precovendmercad;
 			break;
-		case 9:
+		case 7:
 			iss >> buff >> soldadosporto;
 			break;
-		case 10:
+		case 8:
 			iss >> buff >> probevento;
 			break;
-		case 11:
+		case 9:
 			iss >> buff >> probtempestade;
 			break;
-		case 12:
+		case 10:
 			iss >> buff >> probsereias;
 			break;
-		case 13:
+		case 11:
 			iss >> buff >> prombotim;
 			break;			
 		default:
@@ -259,122 +265,119 @@ bool Map::load(string filename) {
 
 void Map::updateMainHarbour() {
 
+	Harbour *aux, *last=nullptr;
 	//Searches for a main harbour
 	for (int y = 0; y < lin; y++) {
 		for (int x = 0; x < col; x++) {
-			if (mapa[y][x]->isFriend())
-				if (mapa[y][x]->isMain())
-					return;						//If one is found, returns
-		}
-	}
-
-	//Searches for a friendly harbour
-	for (int y = 0; y < lin; y++) {
-		for (int x = 0; x < col; x++) {
-			if (mapa[y][x]->isFriend()) {
-				mapa[y][x]->isMain() = true;	//The first one found is promoted to main harbour
-				return;
-			}
-		}
-	}
-}
-
-void Map::update() {
-
-	for (auto it : barcos) {
-		if (it->canMove()) {
-			bool moved = false;
-			int tries = 0;
-			while (!moved) {
-				switch (Direction(rand() % (int)Direction::ENUM_SIZE)) {
-				case Direction::North:
-					if (isWater(it->getX(), it->getY() - 1))
-						if (!hasBoat(it->getX(), it->getY() - 1)) {
-							it->setY(it->getY() - 1);
-							moved = true;
-						}
-					break;
-				case Direction::East:
-					if (isWater(it->getX() + 1, it->getY()))
-						if (!hasBoat(it->getX() + 1, it->getY())){
-							it->setX(it->getX() + 1);
-							moved = true;
-						}
-					break;
-				case Direction::South:
-					if (isWater(it->getX(), it->getY() + 1))
-						if (!hasBoat(it->getX(), it->getY() + 1)){
-							it->setY(it->getY() + 1);
-							moved = true;
-						}
-					break;
-				case Direction::West:
-					if (isWater(it->getX() - 1, it->getY()))
-						if (!hasBoat(it->getX() - 1, it->getY())){
-							it->setX(it->getX() - 1);
-							moved = true;
-						}
-					break;
-				default:
-					break;
-				}
-				if (tries++>10) //quits moving after 10 tries
-					moved = true;
-			}
-		}
-	}
-}
-
-bool Map::isWater(int x, int y) {
-
-	for (auto it : mar) {
-		if (it->getX() == x && it->getY() == y)
-			return true;
-	}
-
-	return false;
-}
-
-bool Map::hasBoat(int x, int y) {
-
-	for (auto it : barcos) {
-		if (it->getX() == x && it->getY() == y)
-			return true;
-	}
-
-	return false;
-}
-
-xy Map::getFreeCoordsNear(Harbour porto) {
-	xy free{-1,-1};
-	int portoX = porto.getX();
-	int portoY = porto.getY();
-
-	for (auto marIt : mar) {
-		if (marIt->getX() >= portoX-1 && marIt->getX() <= portoX + 1) {
-			if (marIt->getY() >=portoY-1 && marIt->getY() <=portoY +1) {
-				if (marIt->getY() == portoY|| marIt->getX()==portoX) { //needed to go from neighbors8 to neighbors4
-					if (barcos.size()) {
-						for (auto barcoIt : barcos) {
-							if (marIt->getX() != barcoIt->getX() || marIt->getY() != barcoIt->getY()) {
-								free.x = marIt->getX();
-								free.y = marIt->getY();
-								return free;
-							}
-						}
-					}
-					else {
-						free.x = marIt->getX();
-						free.y = marIt->getY();
-						return free;
-					}
-				}
+			aux = dynamic_cast<Harbour*>(mapa[y][x]);
+			if (aux != nullptr) {
+				last = aux;
+				if (aux->isMain())
+					return;
 			}
 		}
 	}
 
-	return free;
+	if(last!=nullptr)
+		last->isMain() = true;
 }
+
+//void Map::update() {
+//
+//	for (auto it : barcos) {
+//		if (it->canMove()) {
+//			bool moved = false;
+//			int tries = 0;
+//			while (!moved) {
+//				switch (Direction(rand() % (int)Direction::ENUM_SIZE)) {
+//				case Direction::North:
+//					if (isWater(it->getX(), it->getY() - 1))
+//						if (!hasBoat(it->getX(), it->getY() - 1)) {
+//							it->setY(it->getY() - 1);
+//							moved = true;
+//						}
+//					break;
+//				case Direction::East:
+//					if (isWater(it->getX() + 1, it->getY()))
+//						if (!hasBoat(it->getX() + 1, it->getY())){
+//							it->setX(it->getX() + 1);
+//							moved = true;
+//						}
+//					break;
+//				case Direction::South:
+//					if (isWater(it->getX(), it->getY() + 1))
+//						if (!hasBoat(it->getX(), it->getY() + 1)){
+//							it->setY(it->getY() + 1);
+//							moved = true;
+//						}
+//					break;
+//				case Direction::West:
+//					if (isWater(it->getX() - 1, it->getY()))
+//						if (!hasBoat(it->getX() - 1, it->getY())){
+//							it->setX(it->getX() - 1);
+//							moved = true;
+//						}
+//					break;
+//				default:
+//					break;
+//				}
+//				if (tries++>10) //quits moving after 10 tries
+//					moved = true;
+//			}
+//		}
+//	}
+//}
+//
+//bool Map::isWater(int x, int y) {
+//
+//	for (auto it : mar) {
+//		if (it->getX() == x && it->getY() == y)
+//			return true;
+//	}
+//
+//	return false;
+//}
+//
+//bool Map::hasBoat(int x, int y) {
+//
+//	for (auto it : barcos) {
+//		if (it->getX() == x && it->getY() == y)
+//			return true;
+//	}
+//
+//	return false;
+//}
+//
+//xy Map::getFreeCoordsNear(Harbour porto) {
+//	xy free{-1,-1};
+//	int portoX = porto.getX();
+//	int portoY = porto.getY();
+//
+//	for (auto marIt : mar) {
+//		if (marIt->getX() >= portoX-1 && marIt->getX() <= portoX + 1) {
+//			if (marIt->getY() >=portoY-1 && marIt->getY() <=portoY +1) {
+//				if (marIt->getY() == portoY|| marIt->getX()==portoX) { //needed to go from neighbors8 to neighbors4
+//					if (barcos.size()) {
+//						for (auto barcoIt : barcos) {
+//							if (marIt->getX() != barcoIt->getX() || marIt->getY() != barcoIt->getY()) {
+//								free.x = marIt->getX();
+//								free.y = marIt->getY();
+//								return free;
+//							}
+//						}
+//					}
+//					else {
+//						free.x = marIt->getX();
+//						free.y = marIt->getY();
+//						return free;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	return free;
+//}
 
 //===============================================================================
 //============================== FUNCTIONS ======================================
@@ -507,47 +510,23 @@ void compraNav(Map &mapa, string cmd) {
 
 void printMap(int xOffset, int yOffset, const Map &printThis) {
 
-	//char bFriend = 'A', bEnemy = 'a';
-	//for (auto it : printThis.getMar()) {
-	//	for (int xSquare = 0; xSquare < 2; xSquare++)
-	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
-	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-	//			if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-	//				Consola::setBackgroundColor(Consola::AZUL);
-	//			else
-	//				Consola::setBackgroundColor(Consola::AZUL_CLARO);
-	//			cout << ".";
-	//		}
-	//}
-	//for (auto it : printThis.getTerra()) {
-	//	for (int xSquare = 0; xSquare < 2; xSquare++)
-	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
-	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-	//			if ((it->getX() % 2 && !(it->getY() % 2)) || (it->getY() % 2 && !(it->getX() % 2)))
-	//				Consola::setBackgroundColor(Consola::VERDE);
-	//			else
-	//				Consola::setBackgroundColor(Consola::VERDE_CLARO);
-	//			cout << "+";
-	//		}
-	//}
-	//for (auto it : printThis.getPortos()) {
-	//	Consola::setBackgroundColor(Consola::VERMELHO_CLARO);
-	//	for (int xSquare = 0; xSquare < 2; xSquare++)
-	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
-	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-	//			cout << (it->isFriend() ? bFriend : bEnemy);
-	//		}
-	//	bEnemy++;
-	//	bFriend++;
-	//}
-	//for (auto it : printThis.getBarcos()) {
-	//	Consola::setBackgroundColor(Consola::AMARELO);
-	//	for (int xSquare = 0; xSquare < 2; xSquare++)
-	//		for (int ySquare = 0; ySquare < 2; ySquare++) {
-	//			Consola::gotoxy(2 * it->getX() + xOffset + xSquare, 2 * it->getY() + yOffset + ySquare);
-	//			cout << "1";
-	//		}
-	//}
+	//A princípio foi feita uma abordagem com downcasting e dynamic_cast
+	//a professora Maria Correia sugeriu uma função para obter o caractere a imprimir
+
+	int sprColor;
+	char sprite;
+
+	for (int y = 0; y < printThis.getLin(); y++) {
+		for (int x = 0; x < printThis.getCol(); x++) {
+			printThis.getCell(x, y)->getSprite(sprite, sprColor);
+			for(int ySquare=0;ySquare<2;ySquare++)
+				for (int xSquare=0; xSquare < 2; xSquare++) {
+					Consola::gotoxy(xOffset + (x*2) + xSquare, yOffset + (y*2) + ySquare);
+					Consola::setBackgroundColor(((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?sprColor:sprColor+8);
+					putchar(sprite);
+				}
+		}
+	}
 
 	Consola::setBackgroundColor(Consola::PRETO);
 }
@@ -589,7 +568,7 @@ int main() {
 		else if (linha== "prox"){
 			execCMD(mapa,buffer);
 			buffer.clear();
-			mapa.update();
+			//mapa.update();
 			printMap(1, 1, mapa);
 			Consola::clrspc(42, 20, 37);
 			Consola::clrspc(2, 22, 77);

@@ -1,18 +1,18 @@
 #ifndef __CELL_H__
 #define __CELL_H__
 
+#include "consola.h"
+
 class Cell {
 
 	int x, y;
 	
 public:
 	Cell(int x, int y);
-	//virtual ~Cell() = 0;
+	virtual ~Cell() = 0;
 	int getX() const;
 	int getY() const;
-	virtual bool isFriend() const;
-	virtual bool &isMain();
-
+	virtual void getSprite(char &sprite, int &sprColor) const = 0;
 };
 
 class Harbour: public Cell {
@@ -26,6 +26,7 @@ public:
 
 	bool isFriend()const;
 	bool &isMain();
+	void getSprite(char &sprite, int &sprColor) const;
 
 };
 
@@ -34,7 +35,7 @@ class Land : public Cell {
 public:
 
 	Land(int x, int y);
-
+	void getSprite(char &sprite, int &sprColor) const;
 };
 
 class Sea: public Cell {
@@ -44,7 +45,7 @@ class Sea: public Cell {
 public:
 
 	Sea(int x, int y);
-
+	void getSprite(char &sprite, int &sprColor) const;
 	int getPeixe() const;
 
 };

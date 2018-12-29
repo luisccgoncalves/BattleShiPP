@@ -98,25 +98,28 @@ class Map {
 	//vector<Land*> terra;
 	//vector<Harbour*> portos;
 	//vector<Boat*> barcos;
+
 	vector<vector<Cell*>> mapa;
 
 
 public:
-	~Map();
+	//~Map();
 
 	Harbour				getMainHarbour();
 	vector<Sea*>		getMar() const;
 	vector<Land*>		getTerra() const;
 	vector<Harbour*>	getPortos() const;
 	vector<Boat*>		getBarcos() const;
-
-	//bool	addBoat(string param);
+	Cell*	getCell(int x, int y) const;
+	int		getLin() const;
+	int		getCol() const;
+	bool	addBoat(string param);
 	//bool	addSeaCell(int x, int y);
 	//bool	addLandCell(int x, int y);
 	//bool	addHarbour(int x, int y, char c);
 	bool	load(string filename);
 	void	updateMainHarbour();
-	void	update();
+	//void	update();
 	bool	isWater(int x, int y);
 	bool	hasBoat(int x, int y);
 

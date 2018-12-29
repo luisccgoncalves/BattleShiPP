@@ -4,7 +4,7 @@
 //===============================================================================
 
 Cell::Cell(int x, int y) :x(x), y(y) {};
-//Cell::~Cell() {}
+Cell::~Cell() {}
 
 int Cell::getX() const {
 	return this->x;
@@ -30,6 +30,11 @@ bool &Harbour::isMain() {
 	return isPrincipal;
 }
 
+void Harbour::getSprite(char &sprite, int &sprColor) const{
+	sprite = '1';
+	sprColor = Consola::VERMELHO;
+}
+
 
 //===============================================================================
 //=============================== CLASS LAND ====================================
@@ -37,6 +42,10 @@ bool &Harbour::isMain() {
 
 Land::Land(int x, int y) : Cell(x,y) {};
 
+void Land::getSprite(char &sprite, int &sprColor) const {
+	sprite = '+';
+	sprColor = Consola::VERDE;
+}
 
 //===============================================================================
 //================================ CLASS SEA ====================================
@@ -46,4 +55,9 @@ Sea::Sea(int x, int y) :Cell(x,y), peixe(0) {}
 
 int Sea::getPeixe() const {
 	return peixe;
+}
+
+void Sea::getSprite(char &sprite, int &sprColor) const {
+	sprite = '.';
+	sprColor = Consola::AZUL;
 }
