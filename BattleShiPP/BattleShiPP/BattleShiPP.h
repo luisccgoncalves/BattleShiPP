@@ -9,27 +9,6 @@
 
 using namespace std;
 
-static const vector<string> Comandos{ 
-	"exec",			//0
-	"compranav",	//1
-	"vendenav",		//2
-	"lista",		//3
-	"compra",		//4
-	"vende",		//5
-	"move",			//6
-	"auto",			//7
-	"stop",			//8
-	"pirata",		//9
-	"evpos",		//10
-	"evnav",		//11
-	"moedas",		//12
-	"vaipara",		//13
-	"comprasold",	//14
-	"saveg",		//15
-	"loadg",		//16
-	"delg"			//17
-};
-
 static const vector<char> boatType{
 	'V',			//0 - Veleiro
 	'G',			//1 - Galeão
@@ -55,7 +34,7 @@ class Boat {
 	int		x, y;
 	bool	isAmigo;
 	bool	justSpawned;
-	int		tipo;	//sub-classe?
+	int		tipo;	
 	int		preco;
 	int		soldados;
 	int		agua;
@@ -94,53 +73,46 @@ class Map {
 	int probsereias;
 	int prombotim;
 
-	//vector<Sea*> mar;
-	//vector<Land*> terra;
-	//vector<Harbour*> portos;
-	//vector<Boat*> barcos;
-
 	vector<vector<Cell*>> mapa;
 
 
 public:
-	//~Map();
 
-	Harbour				getMainHarbour();
-	vector<Sea*>		getMar() const;
-	vector<Land*>		getTerra() const;
-	vector<Harbour*>	getPortos() const;
-	vector<Boat*>		getBarcos() const;
+	Harbour		getMainHarbour();
+
 	Cell*	getCell(int x, int y) const;
 	int		getLin() const;
 	int		getCol() const;
 	bool	addBoat(string param);
-	//bool	addSeaCell(int x, int y);
-	//bool	addLandCell(int x, int y);
-	//bool	addHarbour(int x, int y, char c);
+
 	bool	load(string filename);
 	void	updateMainHarbour();
-	//void	update();
-	bool	isWater(int x, int y);
-	bool	hasBoat(int x, int y);
-
-	xy		getFreeCoordsNear(Harbour porto);
-	
 };
 
 
 
 class UI {
 
+	static const string banner;
+	static const vector<string> comandos;
+
+	int xOffset = 1;
+	int yOffset = 1;
+
 public:
-	void	printBanner();
+
+	UI();
+
 	void	intro();
-	void	printInterface();
+	void	printInterface(const Map &mapa);
+	void	updateInterface();
+	void	updateInterface(const Map &mapa);
 	bool	isCmdValid(string linha);
-	int		getBoatType(string param);
 	int		getComandosPos(string cmd);
 	void	execCMD(Map &mapa, stringstream &cmdlist);
-
+	void	resetPrompt();
+	void	resetLastCmd();
 	void	compraNav(Map &mapa, string cmd);
-	void	printMap(int xOffset, int yOffset, const Map &printThis);
+	void	printMap(const Map &printThis);
 };
 #endif

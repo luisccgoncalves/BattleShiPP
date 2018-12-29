@@ -52,55 +52,9 @@ bool Boat::canMove() {
 }
 
 
-
-
 //===============================================================================
 //================================ CLASS MAP ====================================
 //===============================================================================
-
-//Map::~Map() {
-//
-//	for (auto it : mar) {
-//		delete it;
-//	}
-//
-//	for (auto it : terra) {
-//		delete it;
-//	}
-//
-//	for (auto it : portos) {
-//		delete it;
-//	}
-//
-//	for (auto it : barcos) {
-//		delete it;
-//	}
-//}
-//
-//vector<Sea*> Map::getMar() const {
-//	return mar;
-//}
-//
-//vector<Land*> Map::getTerra() const {
-//	return terra;
-//}
-//
-//vector<Harbour*> Map::getPortos() const {
-//	return portos;
-//}
-//
-//vector<Boat*> Map::getBarcos() const {
-//	return barcos;
-//}
-//
-//Harbour Map::getMainHarbour() {
-//
-//	for (auto it : portos)
-//		if (it->isMain())
-//			return *it;
-//
-//	return *portos.at(0);
-//}
 
 Cell* Map::getCell(int x, int y) const {
 	return mapa[y][x];
@@ -113,67 +67,6 @@ int Map::getLin() const {
 int Map::getCol() const {
 	return col;
 }
-
-bool Map::addBoat(string param) {
-
-	////check boat type
-	//int bType=getBoatType(param);
-	//if (bType == -1)
-	//	return false;
-
-	////check if player has enough money
-
-	////get main harbouring coords
-	//xy free=getFreeCoordsNear(getMainHarbour());
-
-	//if (free.x == -1)
-	//	return false;
-	//	
-	//try {
-	//	barcos.push_back(new Boat(free.x, free.y, true, bType, true));
-	//}
-	//catch (const bad_alloc) {
-	//	return false;
-	//}
-
-	return true;
-}
-
-//bool Map::addSeaCell(int x, int y) {
-//
-//	try {
-//		mar.push_back(new Sea(x, y));
-//	}
-//	catch (const bad_alloc) {
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool Map::addLandCell(int x, int y) {
-//
-//	try {
-//		terra.push_back(new Land(x, y));
-//	}
-//	catch (const bad_alloc) {
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool Map::addHarbour(int x, int y, char c) {
-//
-//	try {
-//		portos.push_back(new Harbour(x, y, c < 'Z'));
-//	}
-//	catch (const bad_alloc) {
-//		return false;
-//	}
-//
-//	return true;
-//}
 
 bool Map::load(string filename) {
 
@@ -282,130 +175,58 @@ void Map::updateMainHarbour() {
 		last->isMain() = true;
 }
 
-//void Map::update() {
-//
-//	for (auto it : barcos) {
-//		if (it->canMove()) {
-//			bool moved = false;
-//			int tries = 0;
-//			while (!moved) {
-//				switch (Direction(rand() % (int)Direction::ENUM_SIZE)) {
-//				case Direction::North:
-//					if (isWater(it->getX(), it->getY() - 1))
-//						if (!hasBoat(it->getX(), it->getY() - 1)) {
-//							it->setY(it->getY() - 1);
-//							moved = true;
-//						}
-//					break;
-//				case Direction::East:
-//					if (isWater(it->getX() + 1, it->getY()))
-//						if (!hasBoat(it->getX() + 1, it->getY())){
-//							it->setX(it->getX() + 1);
-//							moved = true;
-//						}
-//					break;
-//				case Direction::South:
-//					if (isWater(it->getX(), it->getY() + 1))
-//						if (!hasBoat(it->getX(), it->getY() + 1)){
-//							it->setY(it->getY() + 1);
-//							moved = true;
-//						}
-//					break;
-//				case Direction::West:
-//					if (isWater(it->getX() - 1, it->getY()))
-//						if (!hasBoat(it->getX() - 1, it->getY())){
-//							it->setX(it->getX() - 1);
-//							moved = true;
-//						}
-//					break;
-//				default:
-//					break;
-//				}
-//				if (tries++>10) //quits moving after 10 tries
-//					moved = true;
-//			}
-//		}
-//	}
-//}
-//
-//bool Map::isWater(int x, int y) {
-//
-//	for (auto it : mar) {
-//		if (it->getX() == x && it->getY() == y)
-//			return true;
-//	}
-//
-//	return false;
-//}
-//
-//bool Map::hasBoat(int x, int y) {
-//
-//	for (auto it : barcos) {
-//		if (it->getX() == x && it->getY() == y)
-//			return true;
-//	}
-//
-//	return false;
-//}
-//
-//xy Map::getFreeCoordsNear(Harbour porto) {
-//	xy free{-1,-1};
-//	int portoX = porto.getX();
-//	int portoY = porto.getY();
-//
-//	for (auto marIt : mar) {
-//		if (marIt->getX() >= portoX-1 && marIt->getX() <= portoX + 1) {
-//			if (marIt->getY() >=portoY-1 && marIt->getY() <=portoY +1) {
-//				if (marIt->getY() == portoY|| marIt->getX()==portoX) { //needed to go from neighbors8 to neighbors4
-//					if (barcos.size()) {
-//						for (auto barcoIt : barcos) {
-//							if (marIt->getX() != barcoIt->getX() || marIt->getY() != barcoIt->getY()) {
-//								free.x = marIt->getX();
-//								free.y = marIt->getY();
-//								return free;
-//							}
-//						}
-//					}
-//					else {
-//						free.x = marIt->getX();
-//						free.y = marIt->getY();
-//						return free;
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	return free;
-//}
-
 //===============================================================================
-//============================== FUNCTIONS ======================================
+//=============================== CLASS UI ======================================
 //===============================================================================
 
-void UI::printBanner() {
+UI::UI() {
+	Consola::setTextColor(Consola::BRANCO_CLARO);
+	
+};
 
-	cout << "  ____        _   _   _       _____ _     _ _____  _____  " << endl;
-	cout << " |  _ \\      | | | | | |     / ____| |   (_)  __ \\|  __ \\ " << endl;
-	cout << " | |_) | __ _| |_| |_| | ___| (___ | |__  _| |__) | |__) |" << endl;
-	cout << " |  _ < / _` | __| __| |/ _ \\\\___ \\| '_ \\| |  ___/|  ___/ " << endl;
-	cout << " | |_) | (_| | |_| |_| |  __/____) | | | | | |    | |     " << endl;
-	cout << " |____/ \\__,_|\\__|\\__|_|\\___|_____/|_| |_|_|_|lus |_|lus  " << endl;
+const string UI::banner{
+	"  ____        _   _   _       _____ _     _ _____  _____  \n"
+	" |  _ \\      | | | | | |     / ____| |   (_)  __ \\|  __ \\ \n"
+	" | |_) | __ _| |_| |_| | ___| (___ | |__  _| |__) | |__) |\n"
+	" |  _ < / _` | __| __| |/ _ \\\\___ \\| '_ \\| |  ___/|  ___/ \n"
+	" | |_) | (_| | |_| |_| |  __/____) | | | | | |    | |     \n"
+	" |____/ \\__,_|\\__|\\__|_|\\___|_____/|_| |_|_|_|lus |_|lus  \n" };
 
-}
+const vector<string> UI::comandos{
+	"exec",			//0
+	"compranav",	//1
+	"vendenav",		//2
+	"lista",		//3
+	"compra",		//4
+	"vende",		//5
+	"move",			//6
+	"auto",			//7
+	"stop",			//8
+	"pirata",		//9
+	"evpos",		//10
+	"evnav",		//11
+	"moedas",		//12
+	"vaipara",		//13
+	"comprasold",	//14
+	"saveg",		//15
+	"loadg",		//16
+	"delg"			//17
+};
 
 void UI::intro() {
 
 	for (int i = 14; i >= 0; i--) {
 		Consola::gotoxy(0, i);
-		printBanner();
+		cout << banner;
 		Sleep(80);
 		if (i)Consola::clrscr();
 	}
-	
+	Sleep(500);
 }
 
-void UI::printInterface() {
+void UI::printInterface(const Map &mapa) {
+
+	Consola::clrscr();
 
 	for (int x = 0; x < 80; x++) {
 		for (int y = 0; y < 24; y++) {
@@ -447,7 +268,26 @@ void UI::printInterface() {
 
 		}
 	}
+
+	printMap(mapa);
+
+	Consola::gotoxy(1, 22);
+	cout << '>';
 }
+
+void	UI::updateInterface() {
+
+	Consola::clrspc(42, 20, 37);
+	resetPrompt();
+
+};
+
+void	UI::updateInterface(const Map &mapa) {
+
+	printMap(mapa);
+	updateInterface();
+
+};
 
 bool UI::isCmdValid(string linha) {
 
@@ -456,26 +296,18 @@ bool UI::isCmdValid(string linha) {
 	vector<string> palavras{ istream_iterator<string>{iss},
 					  istream_iterator<string>{} };
 
-	for (auto it : Comandos)
+	for (auto it : comandos)
 		if (it == palavras.front())
 			return true;
 
 	return false;
 }
 
-int UI::getBoatType(string param) {
-	for (unsigned int i = 0; i < boatType.size(); i++)
-		if (boatType[i] == param.at(0))
-			return i;
-
-	return -1;
-}
-
 int	UI::getComandosPos(string cmd) {
 
 	cmd = cmd.substr(0, cmd.find(" "));
-	for (unsigned int i = 0; i < Comandos.size(); i++)
-		if (Comandos[i] == cmd)
+	for (unsigned int i = 0; i < comandos.size(); i++)
+		if (comandos[i] == cmd)
 			return i;
 
 	return -1;
@@ -484,7 +316,7 @@ int	UI::getComandosPos(string cmd) {
 void UI::execCMD(Map &mapa, stringstream &cmdlist) {
 
 	string cmd;
-	//cout << cmdlist.str();
+
 	while (getline(cmdlist, cmd, '\n')) {
 		switch (getComandosPos(cmd)) {
 		case 0:
@@ -498,6 +330,16 @@ void UI::execCMD(Map &mapa, stringstream &cmdlist) {
 			break;
 		}
 	}
+	cmdlist.clear();
+	updateInterface(mapa);
+}
+
+void UI::resetPrompt() {
+	Consola::clrspc(2, 22, 77);
+}
+
+void UI::resetLastCmd() {
+	Consola::clrspc(42, 20, 37);
 }
 
 void UI::compraNav(Map &mapa, string cmd) {
@@ -508,7 +350,7 @@ void UI::compraNav(Map &mapa, string cmd) {
 	mapa.addBoat(param);
 }
 
-void UI::printMap(int xOffset, int yOffset, const Map &printThis) {
+void UI::printMap(const Map &printThis) {
 
 	//A princípio foi feita uma abordagem com downcasting e dynamic_cast
 	//a professora Maria Correia sugeriu uma função para obter o caractere a imprimir
@@ -537,19 +379,10 @@ int main() {
 
 	Map mapa;
 	UI ui;
-
+	//ui.intro();
 	mapa.load("map.txt");
-
-
-	Consola::setTextColor(Consola::BRANCO_CLARO);
-
-	//intro();
-	Consola::clrscr();
 		
-	ui.printInterface();
-	ui.printMap(1,1,mapa);
-	Consola::gotoxy(1, 22);
-	cout << '>';
+	ui.printInterface(mapa);
 
 	bool running = true;
 	stringstream buffer;
@@ -561,22 +394,17 @@ int main() {
 		getline(cin, linha);
 		
 		if (linha.size()==0 || linha.at(0)==' ') {
-			Consola::clrspc(2, 22, 77);
+			ui.resetPrompt();
 		}
 		else if (linha == "sair") {
 			running = false;
 		}
 		else if (linha== "prox"){
 			ui.execCMD(mapa,buffer);
-			buffer.clear();
-			//mapa.update();
-			ui.printMap(1, 1, mapa);
-			Consola::clrspc(42, 20, 37);
-			Consola::clrspc(2, 22, 77);
 		}
 		else {
 
-			Consola::clrspc(42, 20, 37);
+			ui.resetLastCmd();
 
 			if (ui.isCmdValid(linha)) {
 				buffer << linha << endl;

@@ -63,7 +63,7 @@ void Consola::clrscr() {
 
 void Consola::clrspc(int x, int y, int n) {
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
-	const COORD startCoords = { x, y };
+	const COORD startCoords = { (SHORT)x, (SHORT)y };
 	DWORD dummy;
 
 	GetConsoleScreenBufferInfo(hconsola, &csbi);
@@ -115,6 +115,16 @@ void Consola::setScreenSize(int nLinhas, int nCols) {
 	DisplayArea.Bottom = nLinhas - 1;
 	DisplayArea.Right = nCols - 1;
 	SetConsoleWindowInfo(hconsola, TRUE, &DisplayArea);  // isto muda o tamanho da area da janela em caracteres
+}
+
+void Consola::getWndSize(int &x, int &y) {
+
+	CONSOLE_SCREEN_BUFFER_INFO pCSBI;
+	GetConsoleScreenBufferInfo(hconsola, &pCSBI);
+
+	x = pCSBI.srWindow.Right;
+	y = pCSBI.srWindow.Bottom;
+
 }
 
 // usar esta de preferência a não ser que se esteja no XP ou anterior

@@ -85,6 +85,8 @@ public:
 	// - Limpa o ecrã usando a côr que estiver definida?
 	static void setScreenSize(int nLinhas, int nCols);
 
+	static void getWndSize(int &x, int &y);
+
 	// Muda (tenta mudar) o tamanho da letra
 	// - Esta função pode falhar em determinadas situações
 	//   (falhar = não muda nada)
