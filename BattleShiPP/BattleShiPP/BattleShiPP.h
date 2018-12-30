@@ -13,15 +13,6 @@
 
 using namespace std;
 
-
-enum class Direction {
-	North=0,
-	East,
-	South,
-	West,
-	ENUM_SIZE
-};
-
 class Map {
 
 	int lin, col;
@@ -39,9 +30,20 @@ class Map {
 	int prombotim;
 
 	vector<vector<Cell*>> mapa;
-
+	static const vector<string> direccao;
 
 public:
+
+	enum heading{
+		D,
+		E,
+		C,
+		B,
+		CE,
+		CD,
+		BE,
+		BD
+	};
 
 	Harbour		getMainHarbour();
 
@@ -62,6 +64,7 @@ class UI {
 	int xOffset = 1;
 	int yOffset = 1;
 
+	bool isNum(string num);
 public:
 
 	UI();

@@ -36,3 +36,7 @@ char	Sprite::getSprite() {
 int		Sprite::getSpriteColor() {
 	return clr;
 };
+
+const vector<char>  Sprite::getBoatTypes() {
+	return boatType;
+};

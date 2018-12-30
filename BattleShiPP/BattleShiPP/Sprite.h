@@ -30,5 +30,6 @@ public:
 	void	setSpriteColor(int color);
 	char	getSprite();
 	int		getSpriteColor();
+	static const vector<char>  getBoatTypes();
 };
 #endif

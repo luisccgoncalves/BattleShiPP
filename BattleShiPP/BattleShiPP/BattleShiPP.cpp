@@ -4,6 +4,17 @@
 //================================ CLASS MAP ====================================
 //===============================================================================
 
+const vector<string> Map::direccao{
+		"D",
+		"E",
+		"C",
+		"B",
+		"CE",
+		"CD",
+		"BE",
+		"BD"
+};
+
 Cell* Map::getCell(int x, int y) const {
 	return mapa[y][x];
 }
@@ -249,11 +260,59 @@ bool UI::isCmdValid(string linha) {
 	for (vector<string>::const_iterator it = comandos.begin(); it != comandos.end(); ++it, i++) {
 		if (*it == palavras.front()) {
 			switch (i) {
-			case 0:
-				break;
-			case 1:
-				if (palavras.size() == 2) 
+			case 0://exec <nomeFicheiro>
+				if (palavras.size() == 2)
 					return true;
+				break;
+			case 1://compranav <T>
+				if (palavras.size() == 2 && palavras.at(1).size()==1)
+					for(auto it : Sprite::getBoatTypes())
+						if(it==palavras.at(1)[0])
+							return true;
+				break;
+			case 2://vendenav <N>
+				if (palavras.size() == 2 && isNum(palavras.at(1)))
+					return true;
+				break;
+			case 3:	//lista
+				if (palavras.size() == 1)
+					return true;
+				break;
+			case 4:	 //compra <N> <M>
+				if (palavras.size() == 3 && 
+					isNum(palavras.at(1)) && 
+					isNum(palavras.at(2)))
+					return true;
+				break;
+			case 5:	 //vende <N>
+				if (palavras.size() == 2 && isNum(palavras.at(1)))
+					return true;
+				break;
+			case 6:	 //move <N> <X>
+				break;
+			case 7:	 //auto <N>
+				break;
+			case 8:	 //stop <N>
+				break;
+			case 9:	 //pirata <x> <y> <t>
+				break;
+			case 10: //evpos <E> <x> <y>
+				break;
+			case 11: //evnav <E> <N>
+				break;
+			case 12: //moedas <N>
+				break;
+			case 13: //vaipara	<N> <x> <y> || vaipara <N> <P>
+				break;
+			case 14: //comprasold <N> <s>
+				break;
+			case 15: //saveg <nome>
+				break;
+			case 16: //loadg <nome>
+				break;
+			case 17: //delg <nome>
+				break;
+			default:
 				break;
 			}
 
@@ -350,6 +409,14 @@ void UI::printMap(const Map &printThis) {
 	}
 
 	Consola::setBackgroundColor(Consola::PRETO);
+}
+
+bool UI::isNum(string num) {
+	try { stoi(num); }
+	catch (...) {
+		return false;
+	}
+	return true;
 }
 
 int main() {
