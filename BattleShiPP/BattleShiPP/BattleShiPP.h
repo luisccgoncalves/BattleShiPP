@@ -4,17 +4,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <iterator>
+#include <ctime>
 
 #include "Cell.h"
 
 using namespace std;
 
-static const vector<char> boatType{
-	'V',			//0 - Veleiro
-	'G',			//1 - Galeão
-	'E',			//2 - Escuna
-	'F'				//3 - Fragata
-};
 
 enum class Direction {
 	North=0,
@@ -55,12 +53,11 @@ public:
 	void	updateMainHarbour();
 };
 
-
-
 class UI {
 
 	static const string banner;
 	static const vector<string> comandos;
+	static const vector<char> boatType;
 
 	int xOffset = 1;
 	int yOffset = 1;

@@ -18,8 +18,15 @@ int Cell::getY() const {
 //============================= CLASS HARBOUR ===================================
 //===============================================================================
 
+char Harbour::friendID = 'A';
+char Harbour::enemyID = 'a';
+
 Harbour::Harbour(int x, int y, bool isAmigo) : Cell(x,y), isAmigo(isAmigo) {
 	isPrincipal = false;
+	if (isAmigo)
+		name = friendID++;
+	else
+		name = enemyID++;
 }
 
 bool Harbour::isFriend() const {
@@ -30,9 +37,9 @@ bool &Harbour::isMain() {
 	return isPrincipal;
 }
 
-void Harbour::getSprite(char &sprite, int &sprColor) const{
-	sprite = '1';
-	sprColor = Consola::VERMELHO;
+void Harbour::getSprite(Sprite &sprite) const{
+	sprite.setSpriteType(name);
+	sprite.setSpriteColor(Consola::VERMELHO);
 }
 
 
@@ -42,9 +49,9 @@ void Harbour::getSprite(char &sprite, int &sprColor) const{
 
 Land::Land(int x, int y) : Cell(x,y) {};
 
-void Land::getSprite(char &sprite, int &sprColor) const {
-	sprite = '+';
-	sprColor = Consola::VERDE;
+void Land::getSprite(Sprite &sprite) const {
+	sprite.setSpriteType(Sprite::TERRA);
+	sprite.setSpriteColor(Consola::VERDE);
 }
 
 //===============================================================================
@@ -57,7 +64,7 @@ int Sea::getPeixe() const {
 	return peixe;
 }
 
-void Sea::getSprite(char &sprite, int &sprColor) const {
-	sprite = '.';
-	sprColor = Consola::AZUL;
+void Sea::getSprite(Sprite &sprite) const {
+	sprite.setSpriteType(Sprite::AGUA);
+	sprite.setSpriteColor(Consola::AZUL);
 }

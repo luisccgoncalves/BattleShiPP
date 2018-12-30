@@ -147,12 +147,14 @@
     <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="consola.cpp" />
+    <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleShiPP.h" />
     <ClInclude Include="Boat.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="consola.h" />
+    <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="map.txt" />

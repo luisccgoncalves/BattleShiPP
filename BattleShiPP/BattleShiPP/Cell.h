@@ -3,6 +3,7 @@
 
 #include "consola.h"
 #include "Boat.h"
+#include "Sprite.h"
 
 class Cell {
 
@@ -13,13 +14,16 @@ public:
 	virtual ~Cell() = 0;
 	int getX() const;
 	int getY() const;
-	virtual void getSprite(char &sprite, int &sprColor) const = 0;
+	virtual void getSprite(Sprite &sprite) const = 0;
 };
 
 class Harbour: public Cell {
 
 	bool isAmigo;
 	bool isPrincipal;
+	static char friendID;
+	static char enemyID;
+	char name;
 
 public:
 
@@ -27,7 +31,7 @@ public:
 
 	bool isFriend()const;
 	bool &isMain();
-	void getSprite(char &sprite, int &sprColor) const;
+	void getSprite(Sprite &sprite) const;
 
 };
 
@@ -36,7 +40,7 @@ class Land : public Cell {
 public:
 
 	Land(int x, int y);
-	void getSprite(char &sprite, int &sprColor) const;
+	void getSprite(Sprite &sprite) const;
 };
 
 class Sea: public Cell {
@@ -47,7 +51,7 @@ class Sea: public Cell {
 public:
 
 	Sea(int x, int y);
-	void getSprite(char &sprite, int &sprColor) const;
+	void getSprite(Sprite &sprite) const;
 	int getPeixe() const;
 
 };

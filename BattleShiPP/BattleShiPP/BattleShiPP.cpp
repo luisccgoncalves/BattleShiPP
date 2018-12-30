@@ -1,16 +1,4 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-#include <ctime>
-
-using namespace std;
-
 #include "BattleShiPP.h"
-#include "consola.h"
-
-
 
 //===============================================================================
 //================================ CLASS MAP ====================================
@@ -134,6 +122,7 @@ void Map::updateMainHarbour() {
 	if(last!=nullptr)
 		last->isMain() = true;
 }
+
 
 //===============================================================================
 //=============================== CLASS UI ======================================
@@ -341,22 +330,21 @@ void UI::printMap(const Map &printThis) {
 	//A princípio foi feita uma abordagem com downcasting e dynamic_cast
 	//a professora Maria Correia sugeriu uma função para obter o caractere a imprimir
 
-	int sprColor;
-	char sprite;
+	Sprite sprite;
 
 	for (int y = 0; y < printThis.getLin(); y++) {
 		for (int x = 0; x < printThis.getCol(); x++) {
-			printThis.getCell(x, y)->getSprite(sprite, sprColor);
+			printThis.getCell(x, y)->getSprite(sprite);
 			for(int ySquare=0;ySquare<2;ySquare++)
 				for (int xSquare=0; xSquare < 2; xSquare++) {
 					Consola::gotoxy(xOffset + (x*2) + xSquare, yOffset + (y*2) + ySquare);
 					Consola::setBackgroundColor(
 						((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?		//Makes the chess patern
-							(sprColor==Consola::VERMELHO?					//Red will always be light
-								sprColor+8:
-								sprColor):
-							sprColor+8);
-					putchar(sprite);
+							(sprite.getSpriteColor()==Consola::VERMELHO?	//Red will always be light
+								sprite.getSpriteColor() +8:
+								sprite.getSpriteColor()):
+							sprite.getSpriteColor() +8);
+					putchar(sprite.getSprite());
 				}
 		}
 	}
