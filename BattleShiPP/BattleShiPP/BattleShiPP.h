@@ -24,39 +24,6 @@ enum class Direction {
 	ENUM_SIZE
 };
 
-//class ponto? pair<int,int>?
-typedef struct {
-	int x, y;
-}xy;
-
-class Boat {
-	//Esta classe pode ser melhorada com herança e polimorfismo
-	int		x, y;
-	bool	isAmigo;
-	bool	justSpawned;
-	int		tipo;	
-	int		preco;
-	int		soldados;
-	int		agua;
-	int		peixe;
-	int		peixeMax;
-
-public:
-
-	Boat(int x, int y, bool isAmigo, int bType, bool justSpawned=false);
-
-	int getX() const;
-	int getY() const;
-
-	void setX(int newX);
-	void setY(int newY);
-
-	void removeSpawnDizziness();
-	bool canMove();
-
-};
-
-
 class Map {
 
 	int lin, col;
@@ -83,7 +50,6 @@ public:
 	Cell*	getCell(int x, int y) const;
 	int		getLin() const;
 	int		getCol() const;
-	bool	addBoat(string param);
 
 	bool	load(string filename);
 	void	updateMainHarbour();
@@ -110,6 +76,7 @@ public:
 	bool	isCmdValid(string linha);
 	int		getComandosPos(string cmd);
 	void	execCMD(Map &mapa, stringstream &cmdlist);
+	void	processCMD(stringstream &buffer, const string &linha);
 	void	resetPrompt();
 	void	resetLastCmd();
 	void	compraNav(Map &mapa, string cmd);

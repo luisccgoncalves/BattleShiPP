@@ -51,7 +51,7 @@ void Land::getSprite(char &sprite, int &sprColor) const {
 //================================ CLASS SEA ====================================
 //===============================================================================
 
-Sea::Sea(int x, int y) :Cell(x,y), peixe(0) {}
+Sea::Sea(int x, int y) :Cell(x,y), peixe(0), barco(nullptr) {}
 
 int Sea::getPeixe() const {
 	return peixe;

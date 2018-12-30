@@ -144,11 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleShiPP.cpp" />
+    <ClCompile Include="Boat.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="consola.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleShiPP.h" />
+    <ClInclude Include="Boat.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="consola.h" />
   </ItemGroup>

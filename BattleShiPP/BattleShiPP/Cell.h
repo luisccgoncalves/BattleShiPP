@@ -2,6 +2,7 @@
 #define __CELL_H__
 
 #include "consola.h"
+#include "Boat.h"
 
 class Cell {
 
@@ -41,6 +42,7 @@ public:
 class Sea: public Cell {
 
 	int peixe;
+	Boat *barco;
 
 public:
 

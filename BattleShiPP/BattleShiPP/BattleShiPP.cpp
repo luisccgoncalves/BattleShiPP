@@ -11,46 +11,6 @@ using namespace std;
 #include "consola.h"
 
 
-//===============================================================================
-//=============================== CLASS BOAT ====================================
-//===============================================================================
-
-Boat::Boat(int x, int y, bool isAmigo, int bType, bool justSpawned) :
-			x(x), y(y), isAmigo(isAmigo) , tipo(bType), justSpawned(justSpawned){
-
-}
-
-int Boat::getX() const {
-	return x;
-}
-
-int Boat::getY() const {
-	return y;
-}
-
-void Boat::setX(int newX) {
-	x = newX;
-}
-
-void Boat::setY(int newY) {
-	y = newY;
-}
-
-void Boat::removeSpawnDizziness() {
-
-	justSpawned = false;
-}
-
-bool Boat::canMove() {
-
-	if (justSpawned) {
-		removeSpawnDizziness();
-		return false;
-	}
-	else
-		return true;
-}
-
 
 //===============================================================================
 //================================ CLASS MAP ====================================
@@ -334,7 +294,24 @@ void UI::execCMD(Map &mapa, stringstream &cmdlist) {
 	updateInterface(mapa);
 }
 
+void UI::processCMD(stringstream &buffer, const string &linha) {
+
+	resetLastCmd();
+
+	if (isCmdValid(linha)) {
+		buffer << linha << endl;
+		Consola::setTextColor(Consola::VERDE_CLARO);
+	}
+	else {
+		Consola::setTextColor(Consola::VERMELHO_CLARO);
+	}
+	cout << '>' << linha;
+
+	resetPrompt();
+}
+
 void UI::resetPrompt() {
+	Consola::setTextColor(Consola::BRANCO_CLARO);
 	Consola::clrspc(2, 22, 77);
 }
 
@@ -346,8 +323,6 @@ void UI::compraNav(Map &mapa, string cmd) {
 
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
-
-	mapa.addBoat(param);
 }
 
 void UI::printMap(const Map &printThis) {
@@ -364,7 +339,12 @@ void UI::printMap(const Map &printThis) {
 			for(int ySquare=0;ySquare<2;ySquare++)
 				for (int xSquare=0; xSquare < 2; xSquare++) {
 					Consola::gotoxy(xOffset + (x*2) + xSquare, yOffset + (y*2) + ySquare);
-					Consola::setBackgroundColor(((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?sprColor:sprColor+8);
+					Consola::setBackgroundColor(
+						((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?		//Makes the chess patern
+							(sprColor==Consola::VERMELHO?					//Red will always be light
+								sprColor+8:
+								sprColor):
+							sprColor+8);
 					putchar(sprite);
 				}
 		}
@@ -403,20 +383,7 @@ int main() {
 			ui.execCMD(mapa,buffer);
 		}
 		else {
-
-			ui.resetLastCmd();
-
-			if (ui.isCmdValid(linha)) {
-				buffer << linha << endl;
-				Consola::setTextColor(Consola::VERDE_CLARO);
-			}
-			else {
-				Consola::setTextColor(Consola::VERMELHO_CLARO);
-			}
-
-			cout << '>' << linha;
-			Consola::setTextColor(Consola::BRANCO_CLARO);
-			Consola::clrspc(2, 22, 77);
+			ui.processCMD(buffer, linha);
 		}
 	}
 
