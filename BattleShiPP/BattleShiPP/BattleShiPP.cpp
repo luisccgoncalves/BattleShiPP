@@ -255,10 +255,21 @@ bool UI::isCmdValid(string linha) {
 
 	vector<string> palavras{ istream_iterator<string>{iss},
 					  istream_iterator<string>{} };
+	
+	int i = 0;
+	for (vector<string>::const_iterator it = comandos.begin(); it != comandos.end(); ++it, i++) {
+		if (*it == palavras.front()) {
+			switch (i) {
+			case 0:
+				break;
+			case 1:
+				if (palavras.size() == 2) 
+					return true;
+				break;
+			}
 
-	for (auto it : comandos)
-		if (it == palavras.front())
-			return true;
+		}
+	}
 
 	return false;
 }
