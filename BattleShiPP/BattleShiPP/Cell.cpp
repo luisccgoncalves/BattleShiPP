@@ -54,6 +54,10 @@ void Land::getSprite(Sprite &sprite) const {
 	sprite.setSpriteColor(Consola::VERDE);
 }
 
+bool Land::isFriend() const {
+	return false;
+}
+
 //===============================================================================
 //================================ CLASS SEA ====================================
 //===============================================================================
@@ -67,4 +71,8 @@ int Sea::getPeixe() const {
 void Sea::getSprite(Sprite &sprite) const {
 	sprite.setSpriteType(Sprite::AGUA);
 	sprite.setSpriteColor(Consola::AZUL);
+}
+
+bool Sea::isFriend() const {
+	return false;
 }

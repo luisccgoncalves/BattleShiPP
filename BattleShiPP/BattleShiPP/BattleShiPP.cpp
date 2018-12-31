@@ -117,21 +117,21 @@ bool Map::load(string filename) {
 
 void Map::updateMainHarbour() {
 
-	Harbour *aux, *last=nullptr;
+	Harbour *first=nullptr;
 	//Searches for a main harbour
 	for (int y = 0; y < lin; y++) {
 		for (int x = 0; x < col; x++) {
-			aux = dynamic_cast<Harbour*>(mapa[y][x]);
-			if (aux != nullptr) {
-				last = aux;
-				if (aux->isMain())
+			if(mapa[y][x]->isFriend()){
+				//Only harbours return "true", it's safe to cast
+				if(first==nullptr)
+					first = static_cast<Harbour*>(mapa[y][x]);
+				if(static_cast<Harbour*>(mapa[y][x])->isMain())
 					return;
 			}
 		}
 	}
 
-	if(last!=nullptr)
-		last->isMain() = true;
+	first->isMain() = true;
 }
 
 
@@ -385,9 +385,6 @@ void UI::compraNav(Map &mapa, string cmd) {
 }
 
 void UI::printMap(const Map &printThis) {
-
-	//A princípio foi feita uma abordagem com downcasting e dynamic_cast
-	//a professora Maria Correia sugeriu uma função para obter o caractere a imprimir
 
 	Sprite sprite;
 

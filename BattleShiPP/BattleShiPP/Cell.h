@@ -15,6 +15,8 @@ public:
 	int getX() const;
 	int getY() const;
 	virtual void getSprite(Sprite &sprite) const = 0;
+
+	virtual bool isFriend() const = 0;
 };
 
 class Harbour: public Cell {
@@ -41,6 +43,8 @@ public:
 
 	Land(int x, int y);
 	void getSprite(Sprite &sprite) const;
+
+	bool isFriend() const;
 };
 
 class Sea: public Cell {
@@ -54,5 +58,6 @@ public:
 	void getSprite(Sprite &sprite) const;
 	int getPeixe() const;
 
+	bool isFriend() const;
 };
 #endif
