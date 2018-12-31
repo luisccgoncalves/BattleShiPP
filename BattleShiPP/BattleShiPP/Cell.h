@@ -1,6 +1,10 @@
 #ifndef __CELL_H__
 #define __CELL_H__
 
+#include <string>
+
+using std::string;
+
 #include "consola.h"
 #include "Boat.h"
 #include "Sprite.h"
@@ -27,6 +31,8 @@ class Harbour: public Cell {
 	static char enemyID;
 	char name;
 
+	vector<Boat*> barcos;
+
 public:
 
 	Harbour(int x, int y, bool isAmigo);
@@ -34,6 +40,7 @@ public:
 	bool isFriend()const;
 	bool &isMain();
 	void getSprite(Sprite &sprite) const;
+	bool newBoat(string boatType);
 
 };
 

@@ -2,7 +2,7 @@
 #define __BATTLESHIPP_H__
 
 #include <iostream>
-#include <string>
+
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -45,14 +45,13 @@ public:
 		BD
 	};
 
-	Harbour		getMainHarbour();
+	Harbour*	getMainHarbour();
 
 	Cell*	getCell(int x, int y) const;
 	int		getLin() const;
 	int		getCol() const;
 
 	bool	load(string filename);
-	void	updateMainHarbour();
 };
 
 class UI {
@@ -81,5 +80,6 @@ public:
 	void	resetLastCmd();
 	void	compraNav(Map &mapa, string cmd);
 	void	printMap(const Map &printThis);
+
 };
 #endif

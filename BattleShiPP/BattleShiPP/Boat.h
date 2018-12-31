@@ -15,7 +15,7 @@ class Boat {
 
 public:
 
-	Boat(int x, int y, bool isAmigo, int bType, bool justSpawned = false);
+	Boat(bool isAmigo, int bType, bool justSpawned = false);
 
 	int getX() const;
 	int getY() const;

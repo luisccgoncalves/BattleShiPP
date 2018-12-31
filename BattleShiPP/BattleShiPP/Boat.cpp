@@ -5,8 +5,8 @@
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
-Boat::Boat(int x, int y, bool isAmigo, int bType, bool justSpawned) :
-	x(x), y(y), isAmigo(isAmigo), tipo(bType), justSpawned(justSpawned) {
+Boat::Boat(bool isAmigo, int bType, bool justSpawned) :
+	isAmigo(isAmigo), tipo(bType), justSpawned(justSpawned) {
 
 }
 

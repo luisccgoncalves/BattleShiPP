@@ -42,6 +42,13 @@ void Harbour::getSprite(Sprite &sprite) const{
 	sprite.setSpriteColor(Consola::VERMELHO);
 }
 
+bool Harbour::newBoat(string boatType){
+
+	barcos.push_back(new Boat(true, 1, true));
+	Beep(500, 500);
+	return true;
+}
+
 
 //===============================================================================
 //=============================== CLASS LAND ====================================

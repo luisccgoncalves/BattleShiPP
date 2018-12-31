@@ -110,12 +110,12 @@ bool Map::load(string filename) {
 		}
 	}
 
-	updateMainHarbour();
+	getMainHarbour();
 
 	return true;
 }
 
-void Map::updateMainHarbour() {
+Harbour* Map::getMainHarbour() {
 
 	Harbour *first=nullptr;
 	//Searches for a main harbour
@@ -126,12 +126,15 @@ void Map::updateMainHarbour() {
 				if(first==nullptr)
 					first = static_cast<Harbour*>(mapa[y][x]);
 				if(static_cast<Harbour*>(mapa[y][x])->isMain())
-					return;
+					return static_cast<Harbour*>(mapa[y][x]);
 			}
 		}
 	}
 
+	//If no mainHarbour is found, turn the first harbour found into one
 	first->isMain() = true;
+
+	return first;
 }
 
 
@@ -382,6 +385,13 @@ void UI::compraNav(Map &mapa, string cmd) {
 
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
+
+	//check for money
+
+	Harbour* mainH = mapa.getMainHarbour();
+
+	mainH->newBoat(param);
+
 }
 
 void UI::printMap(const Map &printThis) {
