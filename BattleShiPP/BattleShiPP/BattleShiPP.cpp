@@ -137,6 +137,25 @@ Harbour* Map::getMainHarbour() {
 	return first;
 }
 
+bool	Map::setMoedas(int incdec) {
+
+	if (moedas + incdec >= 0) {
+		moedas += incdec;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Map::buyBoat(string boatType) {
+
+	if (setMoedas(-preconavio)) {
+		getMainHarbour()->newBoat(boatType);
+		return true;
+	}
+	else
+		return false;
+}
 
 //===============================================================================
 //=============================== CLASS UI ======================================
@@ -386,11 +405,8 @@ void UI::compraNav(Map &mapa, string cmd) {
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
 
-	//check for money
-
-	Harbour* mainH = mapa.getMainHarbour();
-
-	mainH->newBoat(param);
+	//https://i.imgur.com/pAEFQ6x.jpg
+	mapa.buyBoat(param);
 
 }
 

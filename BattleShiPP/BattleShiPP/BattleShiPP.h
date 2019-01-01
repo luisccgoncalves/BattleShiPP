@@ -52,6 +52,9 @@ public:
 	int		getCol() const;
 
 	bool	load(string filename);
+
+	bool	setMoedas(int incdec);
+	bool	buyBoat(string boatType);
 };
 
 class UI {
