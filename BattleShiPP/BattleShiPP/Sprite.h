@@ -8,7 +8,7 @@ using std::vector;
 class Sprite {
 
 	static const vector<char> cellType;
-	static const vector<char> boatType;
+	
 	char spr;
 	int clr;
 
@@ -17,12 +17,6 @@ public:
 		AGUA,
 		TERRA
 	};
-	enum boat {
-		VELEIRO,
-		GALEAO,
-		ESCUNA,
-		FRAGATA
-	};
 
 	Sprite();
 	void	setSpriteType(int sNum);
@@ -30,6 +24,5 @@ public:
 	void	setSpriteColor(int color);
 	char	getSprite();
 	int		getSpriteColor();
-	static const vector<char>  getBoatTypes();
 };
 #endif

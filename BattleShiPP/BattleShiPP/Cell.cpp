@@ -29,6 +29,12 @@ Harbour::Harbour(int x, int y, bool isAmigo) : Cell(x,y), isAmigo(isAmigo) {
 		name = enemyID++;
 }
 
+Harbour::~Harbour() {
+
+	for (vector<Boat*>::iterator it=barcos.begin() ;it!=barcos.end(); it++)
+		delete *it;
+}
+
 bool Harbour::isFriend() const {
 	return isAmigo;
 }
@@ -42,10 +48,29 @@ void Harbour::getSprite(Sprite &sprite) const{
 	sprite.setSpriteColor(Consola::VERMELHO);
 }
 
-bool Harbour::newBoat(string boatType){
+bool Harbour::newBoat(bool isFriend, string boatType){
 
-	barcos.push_back(new Boat(true, 1, true));
-	Beep(500, 500);
+	switch (boatType[0]) {
+	case 'V':
+		barcos.push_back(new Fragata(isFriend));
+		break;
+	case 'G': 
+		barcos.push_back(new Fragata(isFriend));
+		break;
+	case 'E': 
+		barcos.push_back(new Fragata(isFriend));
+		break;
+	case 'F': 
+		barcos.push_back(new Fragata(isFriend));
+		break;
+	case 'S': 
+		barcos.push_back(new Fragata(isFriend));
+		break;
+	default:
+		return false;
+		break;
+	}
+
 	return true;
 }
 

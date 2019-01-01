@@ -150,7 +150,7 @@ bool	Map::setMoedas(int incdec) {
 bool Map::buyBoat(string boatType) {
 
 	if (setMoedas(-preconavio)) {
-		getMainHarbour()->newBoat(boatType);
+		getMainHarbour()->newBoat(true, boatType);
 		return true;
 	}
 	else
@@ -193,6 +193,14 @@ const vector<string> UI::comandos{
 	"saveg",		//15
 	"loadg",		//16
 	"delg"			//17
+};
+
+const vector<char> UI::boatType{
+	'V',			//0 - Veleiro
+	'G',			//1 - Galeão
+	'E',			//2 - Escuna
+	'F',			//3 - Fragata
+	'S'				//4 - Special
 };
 
 void UI::intro() {
@@ -288,7 +296,7 @@ bool UI::isCmdValid(string linha) {
 				break;
 			case 1://compranav <T>
 				if (palavras.size() == 2 && palavras.at(1).size()==1)
-					for(auto it : Sprite::getBoatTypes())
+					for(auto it : boatType)
 						if(it==palavras.at(1)[0])
 							return true;
 				break;
@@ -405,7 +413,6 @@ void UI::compraNav(Map &mapa, string cmd) {
 	//discard compranav part
 	string param = cmd.substr(cmd.find(" ")+1, cmd.back());
 
-	//https://i.imgur.com/pAEFQ6x.jpg
 	mapa.buyBoat(param);
 
 }

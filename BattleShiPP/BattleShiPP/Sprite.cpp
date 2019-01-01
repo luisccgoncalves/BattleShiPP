@@ -7,12 +7,6 @@ const vector<char> Sprite::cellType{
 	'.',			//0 - Água
 	'+',			//1 - Terra
 };
-const vector<char> Sprite::boatType{
-	'V',			//0 - Veleiro
-	'G',			//1 - Galeão
-	'E',			//2 - Escuna
-	'F'				//3 - Fragata
-};
 
 void	Sprite::setSpriteType(int sNum) {
 	if ((unsigned int)sNum >= cellType.size())
@@ -35,8 +29,4 @@ char	Sprite::getSprite() {
 
 int		Sprite::getSpriteColor() {
 	return clr;
-};
-
-const vector<char>  Sprite::getBoatTypes() {
-	return boatType;
 };

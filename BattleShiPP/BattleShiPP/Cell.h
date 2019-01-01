@@ -15,7 +15,7 @@ class Cell {
 	
 public:
 	Cell(int x, int y);
-	virtual ~Cell() = 0;
+	virtual ~Cell();
 	int getX() const;
 	int getY() const;
 	virtual void getSprite(Sprite &sprite) const = 0;
@@ -36,11 +36,12 @@ class Harbour: public Cell {
 public:
 
 	Harbour(int x, int y, bool isAmigo);
+	~Harbour();
 
 	bool isFriend()const;
 	bool &isMain();
 	void getSprite(Sprite &sprite) const;
-	bool newBoat(string boatType);
+	bool newBoat(bool isFriend, string boatType);
 
 };
 

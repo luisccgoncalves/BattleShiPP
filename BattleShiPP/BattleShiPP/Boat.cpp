@@ -5,38 +5,31 @@
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
-Boat::Boat(bool isAmigo, int bType, bool justSpawned) :
-	isAmigo(isAmigo), tipo(bType), justSpawned(justSpawned) {
+Boat::Boat(bool isAmigo) :
+	isAmigo(isAmigo) {
 
 }
 
-int Boat::getX() const {
-	return x;
+Veleiro::Veleiro(bool isAmigo) :
+	Boat(isAmigo) {
+
 }
 
-int Boat::getY() const {
-	return y;
+Galeao::Galeao(bool isAmigo) :
+	Boat(isAmigo) {
+
 }
 
-void Boat::setX(int newX) {
-	x = newX;
+Escuna::Escuna(bool isAmigo) :
+	Boat(isAmigo) {
+
+}
+Fragata::Fragata(bool isAmigo) : 
+	Boat(isAmigo) {
+
 }
 
-void Boat::setY(int newY) {
-	y = newY;
-}
+Special::Special(bool isAmigo) :
+	Boat(isAmigo) {
 
-void Boat::removeSpawnDizziness() {
-
-	justSpawned = false;
-}
-
-bool Boat::canMove() {
-
-	if (justSpawned) {
-		removeSpawnDizziness();
-		return false;
-	}
-	else
-		return true;
 }
