@@ -5,9 +5,14 @@
 
 using std::string;
 
+class Map;
+class Cell;
+
 class Boat {
 
+protected:
 	bool	isAmigo;
+	bool	isDocked;
 
 	int		soldados;
 	int		soldadosMax;
@@ -19,10 +24,13 @@ class Boat {
 	int		mercadoria;
 	int		cargaMax;
 
+	Map*	host;
+
 public:
 
-	Boat(bool isAmigo);
-	virtual ~Boat() = 0;
+	Boat(bool isAmigo=true);
+
+	void tick();
 
 };
 

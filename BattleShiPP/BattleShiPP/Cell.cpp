@@ -52,19 +52,19 @@ bool Harbour::newBoat(bool isFriend, string boatType){
 
 	switch (boatType[0]) {
 	case 'V':
-		barcos.push_back(new Fragata(isFriend));
+		barcos.push_back(new Veleiro(isFriend));
 		break;
 	case 'G': 
-		barcos.push_back(new Fragata(isFriend));
+		barcos.push_back(new Galeao(isFriend));
 		break;
 	case 'E': 
-		barcos.push_back(new Fragata(isFriend));
+		barcos.push_back(new Escuna(isFriend));
 		break;
 	case 'F': 
 		barcos.push_back(new Fragata(isFriend));
 		break;
 	case 'S': 
-		barcos.push_back(new Fragata(isFriend));
+		barcos.push_back(new Special(isFriend));
 		break;
 	default:
 		return false;
