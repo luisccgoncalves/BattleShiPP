@@ -35,21 +35,33 @@ Harbour::~Harbour() {
 		delete *it;
 }
 
-bool Harbour::isFriend() const {
+bool Harbour::isFriend() const{
 	return isAmigo;
+}
+
+bool Harbour::canHaveBoat() const {
+	return true;
+}
+
+int Harbour::hasBoat() const {
+	return barcos.size();
 }
 
 bool &Harbour::isMain() {
 	return isPrincipal;
 }
 
-void Harbour::getSprite(Sprite &sprite) const{
-	sprite.setSpriteType(name);
-	sprite.setSpriteColor(Consola::VERMELHO);
+Sprite Harbour::getSprite() const{
+
+	Sprite s;
+	s.setSpriteType(name);
+	s.setSpriteColor(Consola::VERMELHO);
+
+	return s;
 }
 
-int Harbour::getDockedBoats() {
-	return barcos.size();
+vector<Boat*> Harbour::getDockedBoats() {
+	return barcos;
 }
 
 bool Harbour::newBoat(bool isFriend, string boatType){
@@ -85,13 +97,25 @@ bool Harbour::newBoat(bool isFriend, string boatType){
 
 Land::Land(int x, int y) : Cell(x,y) {};
 
-void Land::getSprite(Sprite &sprite) const {
-	sprite.setSpriteType(Sprite::TERRA);
-	sprite.setSpriteColor(Consola::VERDE);
+Sprite Land::getSprite() const {
+
+	Sprite s;
+	s.setSpriteType(Sprite::TERRA);
+	s.setSpriteColor(Consola::VERDE);
+
+	return s;
 }
 
 bool Land::isFriend() const {
 	return false;
+}
+
+bool Land::canHaveBoat() const {
+	return false;
+}
+
+int Land::hasBoat() const {
+	return 0;
 }
 
 //===============================================================================
@@ -104,11 +128,22 @@ int Sea::getPeixe() const {
 	return peixe;
 }
 
-void Sea::getSprite(Sprite &sprite) const {
-	sprite.setSpriteType(Sprite::AGUA);
-	sprite.setSpriteColor(Consola::AZUL);
+Sprite Sea::getSprite() const {
+	Sprite s;
+	s.setSpriteType(Sprite::AGUA);
+	s.setSpriteColor(Consola::AZUL);
+
+	return s;
 }
 
 bool Sea::isFriend() const {
 	return false;
+}
+
+bool Sea::canHaveBoat() const {
+	return true;
+}
+
+int Sea::hasBoat() const {
+	return (barco != nullptr);
 }

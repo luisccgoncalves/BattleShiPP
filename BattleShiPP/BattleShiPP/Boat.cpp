@@ -6,16 +6,20 @@
 //=============================== CLASS BOAT ====================================
 //===============================================================================
 
+int Boat::boatID = 1;
+
 Boat::Boat(bool isAmigo) :
-	isAmigo(isAmigo), peixe(0), mercadoria(0){
+	isAmigo(isAmigo), peixe(0), mercadoria(0), boatNr(boatID++){
 
 	//Enemy ships spawn undocked
 	if(!isAmigo)
 		isDocked = false;
 }
 
+const int Boat::getBoatNr() {
+	return boatNr;
+}
 void Boat::tick() {
-	mapa->getMapa()[0][0]->isFriend();
 }
 
 Veleiro::Veleiro(bool isAmigo) :

@@ -114,13 +114,12 @@ void UI::printVars(const Map &mapa) {
 	Consola::gotoxy(42, 1);
 	cout << "\20MOEDAS:" << mapa.getMoedas();
 	
-	Sprite s;
 	Harbour *mainH=mapa.getMainHarbour();
-	mainH->getSprite(s);
+
 	Consola::gotoxy(42, 2);
-	cout << "\20Porto Principal: " << s.getSprite();
+	cout << "\20Porto Principal: " << mainH->getSprite().getSprite();
 	Consola::gotoxy(46, 3);
-	cout << "\20N\247Barcos PP: " << mainH->getDockedBoats();
+	cout << "\20N\247Barcos PP: " << mainH->getDockedBoats().size();
 }
 
 void	UI::updateInterface() {
@@ -282,15 +281,13 @@ void UI::printMap(const Map &printThis) {
 
 	for (int y = 0; y < printThis.getLin(); y++) {
 		for (int x = 0; x < printThis.getCol(); x++) {
-			printThis.getCell(x, y)->getSprite(sprite);
+			sprite=printThis.getCell(x, y)->getSprite();
 			for(int ySquare=0;ySquare<2;ySquare++)
 				for (int xSquare=0; xSquare < 2; xSquare++) {
 					Consola::gotoxy(xOffset + (x*2) + xSquare, yOffset + (y*2) + ySquare);
 					Consola::setBackgroundColor(
 						((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?		//Makes the chess patern
-							(sprite.getSpriteColor()==Consola::VERMELHO?	//Red will always be light
-								sprite.getSpriteColor() +8:
-								sprite.getSpriteColor()):
+							sprite.getSpriteColor():
 							sprite.getSpriteColor() +8);
 					putchar(sprite.getSprite());
 				}

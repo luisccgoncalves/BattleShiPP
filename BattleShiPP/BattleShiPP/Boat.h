@@ -8,7 +8,11 @@ using std::string;
 class Map;
 class Boat {
 
+	static int boatID;
+	const int boatNr;
+
 protected:
+
 	bool	isAmigo;
 	bool	isDocked;
 
@@ -27,6 +31,7 @@ public:
 
 	Boat(bool isAmigo=true);
 
+	const int getBoatNr();
 	void tick();
 
 };

@@ -25,6 +25,7 @@ class Map {
 	int prombotim;
 
 	vector<vector<Cell*>> mapa;
+	//vector<Boat*> boatRadar;
 	static const vector<string> direccao;
 
 public:
@@ -40,7 +41,6 @@ public:
 		BD
 	};
 
-	//Harbour*	getMainHarbour();
 	Harbour*	getMainHarbour() const;
 
 	Cell*	getCell(int x, int y) const;

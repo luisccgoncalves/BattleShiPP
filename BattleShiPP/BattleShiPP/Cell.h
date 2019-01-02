@@ -18,9 +18,11 @@ public:
 	virtual ~Cell();
 	int getX() const;
 	int getY() const;
-	virtual void getSprite(Sprite &sprite) const = 0;
+	virtual Sprite getSprite() const = 0;
 
 	virtual bool isFriend() const = 0;
+	virtual bool canHaveBoat() const = 0;
+	virtual int hasBoat() const = 0;
 };
 
 class Harbour: public Cell {
@@ -32,16 +34,18 @@ class Harbour: public Cell {
 	char name;
 
 	vector<Boat*> barcos;
-
 public:
 
 	Harbour(int x, int y, bool isAmigo);
 	~Harbour();
 
-	bool isFriend()const;
+	bool isFriend() const override;
+	bool canHaveBoat() const override;
+	int hasBoat() const override;
+
 	bool &isMain();
-	void getSprite(Sprite &sprite) const;
-	int	 getDockedBoats();
+	Sprite getSprite() const override;
+	vector<Boat*>	 getDockedBoats();
 	bool newBoat(bool isFriend, string boatType);
 
 };
@@ -51,9 +55,11 @@ class Land : public Cell {
 public:
 
 	Land(int x, int y);
-	void getSprite(Sprite &sprite) const;
+	Sprite getSprite() const override;
 
-	bool isFriend() const;
+	bool isFriend() const override;
+	bool canHaveBoat() const override;
+	int hasBoat() const override;
 };
 
 class Sea: public Cell {
@@ -64,9 +70,11 @@ class Sea: public Cell {
 public:
 
 	Sea(int x, int y);
-	void getSprite(Sprite &sprite) const;
+	Sprite getSprite() const;
 	int getPeixe() const;
 
-	bool isFriend() const;
+	bool isFriend() const override;
+	bool canHaveBoat() const override;
+	int hasBoat() const override;
 };
 #endif
