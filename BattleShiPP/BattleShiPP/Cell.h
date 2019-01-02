@@ -41,6 +41,7 @@ public:
 	bool isFriend()const;
 	bool &isMain();
 	void getSprite(Sprite &sprite) const;
+	int	 getDockedBoats();
 	bool newBoat(bool isFriend, string boatType);
 
 };

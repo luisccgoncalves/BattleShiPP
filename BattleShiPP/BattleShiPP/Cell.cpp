@@ -48,6 +48,10 @@ void Harbour::getSprite(Sprite &sprite) const{
 	sprite.setSpriteColor(Consola::VERMELHO);
 }
 
+int Harbour::getDockedBoats() {
+	return barcos.size();
+}
+
 bool Harbour::newBoat(bool isFriend, string boatType){
 
 	switch (boatType[0]) {

@@ -23,6 +23,7 @@ public:
 
 	void	intro();
 	void	printInterface(const Map &mapa);
+	void	printVars(const Map &mapa);
 	void	updateInterface();
 	void	updateInterface(const Map &mapa);
 	bool	isCmdValid(string linha);

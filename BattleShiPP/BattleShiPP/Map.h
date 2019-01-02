@@ -40,11 +40,13 @@ public:
 		BD
 	};
 
-	Harbour*	getMainHarbour();
+	//Harbour*	getMainHarbour();
+	Harbour*	getMainHarbour() const;
 
 	Cell*	getCell(int x, int y) const;
 	int		getLin() const;
 	int		getCol() const;
+	int		getMoedas() const;
 
 	bool	load(string filename);
 

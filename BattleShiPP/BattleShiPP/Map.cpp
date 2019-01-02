@@ -23,6 +23,10 @@ int Map::getCol() const {
 	return col;
 }
 
+int Map::getMoedas() const {
+	return moedas;
+}
+
 bool Map::load(string filename) {
 
 	ifstream map(filename);
@@ -111,7 +115,7 @@ bool Map::load(string filename) {
 	return true;
 }
 
-Harbour* Map::getMainHarbour() {
+Harbour* Map::getMainHarbour() const{
 
 	Harbour *first = nullptr;
 	//Searches for a main harbour

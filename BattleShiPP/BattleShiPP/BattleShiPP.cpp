@@ -102,10 +102,25 @@ void UI::printInterface(const Map &mapa) {
 		}
 	}
 
+	printVars(mapa);
 	printMap(mapa);
 
 	Consola::gotoxy(1, 22);
 	cout << '>';
+}
+
+void UI::printVars(const Map &mapa) {
+
+	Consola::gotoxy(42, 1);
+	cout << "\20MOEDAS:" << mapa.getMoedas();
+	
+	Sprite s;
+	Harbour *mainH=mapa.getMainHarbour();
+	mainH->getSprite(s);
+	Consola::gotoxy(42, 2);
+	cout << "\20Porto Principal: " << s.getSprite();
+	Consola::gotoxy(46, 3);
+	cout << "\20N\247Barcos PP: " << mainH->getDockedBoats();
 }
 
 void	UI::updateInterface() {
@@ -117,6 +132,7 @@ void	UI::updateInterface() {
 
 void	UI::updateInterface(const Map &mapa) {
 
+	printVars(mapa);
 	printMap(mapa);
 	updateInterface();
 

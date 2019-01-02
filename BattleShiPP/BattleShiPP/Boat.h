@@ -5,9 +5,6 @@
 
 using std::string;
 
-class Map;
-class Cell;
-
 class Boat {
 
 protected:
@@ -23,8 +20,6 @@ protected:
 	int		peixe;
 	int		mercadoria;
 	int		cargaMax;
-
-	Map*	host;
 
 public:
 
