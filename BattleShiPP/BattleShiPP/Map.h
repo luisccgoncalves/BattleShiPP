@@ -29,7 +29,7 @@ class Map {
 
 public:
 
-	enum heading {
+	enum class heading {
 		D,
 		E,
 		C,
@@ -47,6 +47,7 @@ public:
 	int		getLin() const;
 	int		getCol() const;
 	int		getMoedas() const;
+	vector<vector<Cell*>> getMapa();
 
 	bool	load(string filename);
 

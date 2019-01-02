@@ -5,6 +5,7 @@
 
 using std::string;
 
+class Map;
 class Boat {
 
 protected:
@@ -21,6 +22,7 @@ protected:
 	int		mercadoria;
 	int		cargaMax;
 
+	Map*	mapa;
 public:
 
 	Boat(bool isAmigo=true);

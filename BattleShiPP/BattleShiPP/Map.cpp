@@ -27,6 +27,10 @@ int Map::getMoedas() const {
 	return moedas;
 }
 
+vector<vector<Cell*>> Map::getMapa() {
+	return mapa;
+}
+
 bool Map::load(string filename) {
 
 	ifstream map(filename);

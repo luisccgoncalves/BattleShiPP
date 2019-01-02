@@ -1,4 +1,5 @@
 #include "Boat.h"
+#include "Map.h"
 
 
 //===============================================================================
@@ -14,7 +15,7 @@ Boat::Boat(bool isAmigo) :
 }
 
 void Boat::tick() {
-
+	mapa->getMapa()[0][0]->isFriend();
 }
 
 Veleiro::Veleiro(bool isAmigo) :
