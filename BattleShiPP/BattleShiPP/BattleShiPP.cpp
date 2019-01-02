@@ -191,6 +191,15 @@ bool UI::isCmdValid(string linha) {
 			case 12: //moedas <N>
 				break;
 			case 13: //vaipara	<N> <x> <y> || vaipara <N> <P>
+				if (palavras.size() == 3 && isNum(palavras[1]) && !isNum(palavras[2]))
+					return true;
+				else {
+					int numNum = 0;
+					for (unsigned int i = 1; i < palavras.size(); i++)
+						numNum += isNum(palavras[i]);
+					if ((numNum == 3 && palavras.size() == 4))
+						return true;
+				}
 				break;
 			case 14: //comprasold <N> <s>
 				break;
@@ -226,12 +235,41 @@ void UI::execCMD(Map &mapa, stringstream &cmdlist) {
 
 	while (getline(cmdlist, cmd, '\n')) {
 		switch (getComandosPos(cmd)) {
-		case 0:
+		case 0:	 //exec <nomeFicheiro>
 			break;
-		case 1:
+		case 1:  //compranav <T>
 			compraNav(mapa, cmd);
 			break;
-		case 3:
+		case 3:	 //lista
+			break;
+		case 4:	 //compra <N> <M>
+			break;
+		case 5:  //vende <N>
+			break;
+		case 6:	 //move <N> <X>
+			break;
+		case 7:	 //auto <N>
+			break;
+		case 8:	 //stop <N>
+			break;
+		case 9:	 //pirata <x> <y> <t>
+			break;
+		case 10: //evpos <E> <x> <y>
+			break;
+		case 11: //evnav <E> <N>
+			break;
+		case 12: //moedas <N>
+			break;
+		case 13: //vaipara	<N> <x> <y> || vaipara <N> <P>
+			vaiPara(mapa, cmd);
+			break;
+		case 14: //comprasold <N> <s>
+			break;
+		case 15: //saveg <nome>
+			break;
+		case 16: //loadg <nome>
+			break;
+		case 17: //delg <nome>
 			break;
 		default:
 			break;
@@ -262,7 +300,9 @@ void UI::resetPrompt() {
 	Consola::clrspc(2, 22, 77);
 }
 
+//Clears the last command input
 void UI::resetLastCmd() {
+	
 	Consola::clrspc(42, 20, 37);
 }
 
@@ -295,6 +335,16 @@ void UI::printMap(const Map &printThis) {
 	}
 
 	Consola::setBackgroundColor(Consola::PRETO);
+}
+
+void UI::vaiPara(Map &mapa, string cmd) {
+	istringstream iss(cmd);
+
+	vector<string> param{ istream_iterator<string>{iss},
+					  istream_iterator<string>{} };
+
+	cout << param.size();
+	Sleep(5000);
 }
 
 bool UI::isNum(string num) {

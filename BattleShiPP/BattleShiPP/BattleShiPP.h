@@ -34,6 +34,7 @@ public:
 	void	resetLastCmd();
 	void	compraNav(Map &mapa, string cmd);
 	void	printMap(const Map &printThis);
+	void	vaiPara(Map &mapa, string cmd);
 
 };
 #endif
