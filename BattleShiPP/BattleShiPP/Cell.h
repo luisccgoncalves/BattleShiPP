@@ -23,6 +23,7 @@ public:
 	virtual bool isFriend() const = 0;
 	virtual bool canHaveBoat() const = 0;
 	virtual int hasBoat() const = 0;
+	virtual Boat* hasBoat(int boatNr) const = 0;
 };
 
 class Harbour: public Cell {
@@ -42,11 +43,12 @@ public:
 	bool isFriend() const override;
 	bool canHaveBoat() const override;
 	int hasBoat() const override;
+	Boat* hasBoat(int boatNr) const override;
 
 	bool &isMain();
 	Sprite getSprite() const override;
 	vector<Boat*>	 getDockedBoats();
-	bool newBoat(bool isFriend, string boatType);
+	bool newBoat(bool isFriend, string boatType, Map* mapa);
 
 };
 
@@ -60,6 +62,7 @@ public:
 	bool isFriend() const override;
 	bool canHaveBoat() const override;
 	int hasBoat() const override;
+	Boat* hasBoat(int boatNr) const override;
 };
 
 class Sea: public Cell {
@@ -76,5 +79,6 @@ public:
 	bool isFriend() const override;
 	bool canHaveBoat() const override;
 	int hasBoat() const override;
+	Boat* hasBoat(int boatNr) const override;
 };
 #endif

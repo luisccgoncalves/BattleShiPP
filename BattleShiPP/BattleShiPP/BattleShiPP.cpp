@@ -343,8 +343,14 @@ void UI::vaiPara(Map &mapa, string cmd) {
 	vector<string> param{ istream_iterator<string>{iss},
 					  istream_iterator<string>{} };
 
-	cout << param.size();
-	Sleep(5000);
+	Boat* barco = mapa.findBoat(toNum(param[1]));
+	if (barco == nullptr) {
+		//Boat not found
+		return;
+	}
+
+	if (barco->setHeading(toNum(param[2]), toNum(param[3])))
+		Beep(500,500);
 }
 
 bool UI::isNum(string num) {
@@ -353,6 +359,10 @@ bool UI::isNum(string num) {
 		return false;
 	}
 	return true;
+}
+
+int UI::toNum(string num) {
+	return stoi(num);
 }
 
 int main() {

@@ -154,9 +154,20 @@ bool	Map::setMoedas(int incdec) {
 bool Map::buyBoat(string boatType) {
 
 	if (setMoedas(-preconavio)) {
-		getMainHarbour()->newBoat(true, boatType);
+		getMainHarbour()->newBoat(true, boatType, this);
 		return true;
 	}
 	else
 		return false;
+}
+
+Boat* Map::findBoat(int boatNr)const {
+
+	for (int y = 0; y < lin; y++)
+		for (int x = 0; x < col; x++)
+			if (mapa[y][x]->canHaveBoat())
+				if(mapa[y][x]->hasBoat(boatNr)!=nullptr)
+					return mapa[y][x]->hasBoat(boatNr);	
+
+	return nullptr;
 }

@@ -8,8 +8,8 @@
 
 int Boat::boatID = 1;
 
-Boat::Boat(bool isAmigo) :
-	isAmigo(isAmigo), peixe(0), mercadoria(0), boatNr(boatID++){
+Boat::Boat(Map* mapa, bool isAmigo) :
+	isAmigo(isAmigo), peixe(0), mercadoria(0), boatNr(boatID++), mapa(mapa){
 
 	//Enemy ships spawn undocked
 	if(!isAmigo)
@@ -19,11 +19,23 @@ Boat::Boat(bool isAmigo) :
 const int Boat::getBoatNr() {
 	return boatNr;
 }
-void Boat::tick() {
+
+bool Boat::setHeading(int x, int y) {
+
+	x = abs(x); y = abs(y);
+
+	if (x < mapa->getCol() && y < mapa->getLin())
+		if (mapa->getMapa()[y][x]->canHaveBoat()) {
+			headingX = x;
+			headingY = y;
+			return true;
+		}
+
+	return false;
 }
 
-Veleiro::Veleiro(bool isAmigo) :
-	Boat(isAmigo){
+Veleiro::Veleiro(Map* mapa, bool isAmigo) :
+	Boat(mapa, isAmigo){
 	soldados = soldadosMax = 20;
 	agua = aguaMax = 200;
 	if (isAmigo)
@@ -32,27 +44,27 @@ Veleiro::Veleiro(bool isAmigo) :
 		cargaMax = 0;
 }
 
-Galeao::Galeao(bool isAmigo) :
-	Boat(isAmigo) {
+Galeao::Galeao(Map* mapa, bool isAmigo) :
+	Boat(mapa, isAmigo) {
 	soldados = soldadosMax = 40;
 	agua = aguaMax = 400;
 	cargaMax = 70;
 }
 
-Escuna::Escuna(bool isAmigo) :
-	Boat(isAmigo) {
+Escuna::Escuna(Map* mapa, bool isAmigo) :
+	Boat(mapa, isAmigo) {
 	soldados = soldadosMax = 10;
 	agua = aguaMax = 100;
 	cargaMax = 20;
 }
-Fragata::Fragata(bool isAmigo) : 
-	Boat(isAmigo) {
+Fragata::Fragata(Map* mapa, bool isAmigo) :
+	Boat(mapa, isAmigo) {
 	soldados = soldadosMax = 50;
 	agua = aguaMax = 500;
 }
 
-Special::Special(bool isAmigo) :
-	Boat(isAmigo) {
+Special::Special(Map* mapa, bool isAmigo) :
+	Boat(mapa, isAmigo) {
 	soldados = soldadosMax = 2;
 	agua = aguaMax = 200;
 	cargaMax = 150;

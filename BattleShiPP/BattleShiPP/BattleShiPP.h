@@ -17,6 +17,7 @@ class UI {
 	int yOffset = 1;
 
 	bool isNum(string num);
+	int	 toNum(string num);
 public:
 
 	UI();

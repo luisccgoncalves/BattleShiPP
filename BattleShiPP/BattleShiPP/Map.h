@@ -53,5 +53,7 @@ public:
 
 	bool	setMoedas(int incdec);
 	bool	buyBoat(string boatType);
+
+	Boat*	findBoat(int boatNr)const;
 };
 #endif

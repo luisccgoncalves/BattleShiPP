@@ -47,6 +47,17 @@ int Harbour::hasBoat() const {
 	return barcos.size();
 }
 
+Boat* Harbour::hasBoat(int boatNr) const {
+
+	if (barcos.size()) {
+		for (auto it : barcos)
+			if (it->getBoatNr() == boatNr)
+				return it;
+	}
+
+	return nullptr;			
+}
+
 bool &Harbour::isMain() {
 	return isPrincipal;
 }
@@ -64,23 +75,23 @@ vector<Boat*> Harbour::getDockedBoats() {
 	return barcos;
 }
 
-bool Harbour::newBoat(bool isFriend, string boatType){
+bool Harbour::newBoat(bool isFriend, string boatType, Map* mapa){
 
 	switch (boatType[0]) {
 	case 'V':
-		barcos.push_back(new Veleiro(isFriend));
+		barcos.push_back(new Veleiro(mapa, isFriend));
 		break;
 	case 'G': 
-		barcos.push_back(new Galeao(isFriend));
+		barcos.push_back(new Galeao(mapa, isFriend));
 		break;
 	case 'E': 
-		barcos.push_back(new Escuna(isFriend));
+		barcos.push_back(new Escuna(mapa, isFriend));
 		break;
 	case 'F': 
-		barcos.push_back(new Fragata(isFriend));
+		barcos.push_back(new Fragata(mapa, isFriend));
 		break;
 	case 'S': 
-		barcos.push_back(new Special(isFriend));
+		barcos.push_back(new Special(mapa, isFriend));
 		break;
 	default:
 		return false;
@@ -118,6 +129,10 @@ int Land::hasBoat() const {
 	return 0;
 }
 
+Boat* Land::hasBoat(int boatNr) const {
+	return nullptr;
+}
+
 //===============================================================================
 //================================ CLASS SEA ====================================
 //===============================================================================
@@ -146,4 +161,8 @@ bool Sea::canHaveBoat() const {
 
 int Sea::hasBoat() const {
 	return (barco != nullptr);
+}
+
+Boat* Sea::hasBoat(int boatNr) const {
+	return barco;
 }

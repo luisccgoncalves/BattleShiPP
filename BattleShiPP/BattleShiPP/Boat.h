@@ -6,6 +6,7 @@
 using std::string;
 
 class Map;
+
 class Boat {
 
 	static int boatID;
@@ -27,12 +28,14 @@ protected:
 	int		cargaMax;
 
 	Map*	mapa;
+
+	int		headingY, headingX;
 public:
 
-	Boat(bool isAmigo=true);
+	Boat(Map* mapa, bool isAmigo=true);
 
 	const int getBoatNr();
-	void tick();
+	bool setHeading(int x, int y);
 
 };
 
@@ -40,34 +43,34 @@ class Veleiro :public Boat {
 
 public:
 
-	Veleiro(bool isAmigo);
+	Veleiro(Map* mapa, bool isAmigo);
 };
 
 class Galeao :public Boat {
 
 public:
 
-	Galeao(bool isAmigo);
+	Galeao(Map* mapa, bool isAmigo);
 };
 
 class Escuna :public Boat {
 
 public:
 
-	Escuna(bool isAmigo);
+	Escuna(Map* mapa, bool isAmigo);
 };
 
 class Fragata :public Boat {
 
 public:
 
-	Fragata(bool isAmigo);
+	Fragata(Map* mapa, bool isAmigo);
 };
 
 class Special :public Boat {
 
 public:
 
-	Special(bool isAmigo);
+	Special(Map* mapa, bool isAmigo);
 };
 #endif
