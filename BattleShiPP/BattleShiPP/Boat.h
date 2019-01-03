@@ -14,6 +14,7 @@ class Boat {
 
 protected:
 
+	int		x, y;
 	bool	isAmigo;
 	bool	isDocked;
 
@@ -29,13 +30,16 @@ protected:
 
 	Map*	mapa;
 
+	bool	headingSet = false;
 	int		headingY, headingX;
 public:
 
-	Boat(Map* mapa, bool isAmigo=true);
+	Boat(int x, int y, Map* mapa, bool isAmigo=true);
 
 	const int getBoatNr();
 	bool setHeading(int x, int y);
+	void gotoHeading();
+	void tick();
 
 };
 
@@ -43,34 +47,39 @@ class Veleiro :public Boat {
 
 public:
 
-	Veleiro(Map* mapa, bool isAmigo);
+	Veleiro(int x, int y, Map* mapa, bool isAmigo);
+	//void tick() override;
 };
 
 class Galeao :public Boat {
 
 public:
 
-	Galeao(Map* mapa, bool isAmigo);
+	Galeao(int x, int y, Map* mapa, bool isAmigo);
+	//void tick() override;
 };
 
 class Escuna :public Boat {
 
 public:
 
-	Escuna(Map* mapa, bool isAmigo);
+	Escuna(int x, int y, Map* mapa, bool isAmigo);
+	//void tick() override;
 };
 
 class Fragata :public Boat {
 
 public:
 
-	Fragata(Map* mapa, bool isAmigo);
+	Fragata(int x, int y, Map* mapa, bool isAmigo);
+	//void tick() override;
 };
 
 class Special :public Boat {
 
 public:
 
-	Special(Map* mapa, bool isAmigo);
+	Special(int x, int y, Map* mapa, bool isAmigo);
+	//void tick() override;
 };
 #endif

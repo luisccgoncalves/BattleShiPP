@@ -322,15 +322,16 @@ void UI::printMap(const Map &printThis) {
 	for (int y = 0; y < printThis.getLin(); y++) {
 		for (int x = 0; x < printThis.getCol(); x++) {
 			sprite=printThis.getCell(x, y)->getSprite();
-			for(int ySquare=0;ySquare<2;ySquare++)
-				for (int xSquare=0; xSquare < 2; xSquare++) {
-					Consola::gotoxy(xOffset + (x*2) + xSquare, yOffset + (y*2) + ySquare);
-					Consola::setBackgroundColor(
-						((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2))?		//Makes the chess patern
-							sprite.getSpriteColor():
-							sprite.getSpriteColor() +8);
+			for (int ySquare = 0; ySquare < 2; ySquare++) {
+				if (((x % 2) && !(y % 2)) || (!(x % 2) && (y % 2)))
+					if(sprite.getSpriteColor()!=Consola::VERDE || sprite.getSpriteColor() != Consola::AZUL)
+						sprite.setSpriteColor(sprite.getSpriteColor() + 8);
+				Consola::setBackgroundColor(sprite.getSpriteColor());
+				for (int xSquare = 0; xSquare < 2; xSquare++) {
+					Consola::gotoxy(xOffset + (x * 2) + xSquare, yOffset + (y * 2) + ySquare);
 					putchar(sprite.getSprite());
 				}
+			}
 		}
 	}
 
@@ -393,6 +394,7 @@ int main() {
 		}
 		else if (linha== "prox"){
 			ui.execCMD(mapa,buffer);
+			mapa.tick();
 		}
 		else {
 			ui.processCMD(buffer, linha);

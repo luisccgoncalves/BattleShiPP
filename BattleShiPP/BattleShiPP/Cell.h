@@ -4,6 +4,7 @@
 #include <string>
 
 using std::string;
+using std::to_string;
 
 #include "consola.h"
 #include "Boat.h"
@@ -24,6 +25,8 @@ public:
 	virtual bool canHaveBoat() const = 0;
 	virtual int hasBoat() const = 0;
 	virtual Boat* hasBoat(int boatNr) const = 0;
+	virtual void tick() = 0;
+	virtual void toggleBarco(Boat * barco) = 0;
 };
 
 class Harbour: public Cell {
@@ -49,7 +52,8 @@ public:
 	Sprite getSprite() const override;
 	vector<Boat*>	 getDockedBoats();
 	bool newBoat(bool isFriend, string boatType, Map* mapa);
-
+	void tick()override;
+	void toggleBarco(Boat * barco) override;
 };
 
 class Land : public Cell {
@@ -63,11 +67,14 @@ public:
 	bool canHaveBoat() const override;
 	int hasBoat() const override;
 	Boat* hasBoat(int boatNr) const override;
+	void tick()override;
+	void toggleBarco(Boat * barco) override;
 };
 
 class Sea: public Cell {
 
 	int peixe;
+	static const int peixeMax = 5;
 	Boat *barco;
 
 public:
@@ -80,5 +87,7 @@ public:
 	bool canHaveBoat() const override;
 	int hasBoat() const override;
 	Boat* hasBoat(int boatNr) const override;
+	void tick()override;
+	void toggleBarco(Boat * barco) override;
 };
 #endif

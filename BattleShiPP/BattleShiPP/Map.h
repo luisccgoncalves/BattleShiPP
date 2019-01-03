@@ -55,5 +55,6 @@ public:
 	bool	buyBoat(string boatType);
 
 	Boat*	findBoat(int boatNr)const;
+	void	tick();
 };
 #endif

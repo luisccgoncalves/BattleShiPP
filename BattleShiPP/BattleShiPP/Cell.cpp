@@ -66,7 +66,7 @@ Sprite Harbour::getSprite() const{
 
 	Sprite s;
 	s.setSpriteType(name);
-	s.setSpriteColor(Consola::VERMELHO);
+	s.setSpriteColor(Consola::VERMELHO_CLARO);
 
 	return s;
 }
@@ -79,19 +79,19 @@ bool Harbour::newBoat(bool isFriend, string boatType, Map* mapa){
 
 	switch (boatType[0]) {
 	case 'V':
-		barcos.push_back(new Veleiro(mapa, isFriend));
+		barcos.push_back(new Veleiro(this->getX(), this->getY(), mapa, isFriend));
 		break;
 	case 'G': 
-		barcos.push_back(new Galeao(mapa, isFriend));
+		barcos.push_back(new Galeao(this->getX(), this->getY(), mapa, isFriend));
 		break;
 	case 'E': 
-		barcos.push_back(new Escuna(mapa, isFriend));
+		barcos.push_back(new Escuna(this->getX(), this->getY(), mapa, isFriend));
 		break;
 	case 'F': 
-		barcos.push_back(new Fragata(mapa, isFriend));
+		barcos.push_back(new Fragata(this->getX(), this->getY(), mapa, isFriend));
 		break;
 	case 'S': 
-		barcos.push_back(new Special(mapa, isFriend));
+		barcos.push_back(new Special(this->getX(), this->getY(), mapa, isFriend));
 		break;
 	default:
 		return false;
@@ -99,6 +99,27 @@ bool Harbour::newBoat(bool isFriend, string boatType, Map* mapa){
 	}
 
 	return true;
+}
+
+void Harbour::tick() {
+
+	for (auto barco : barcos)
+		barco->tick();
+}
+
+void Harbour::toggleBarco(Boat* barco) {
+
+	//Search for barco, if present, delete it from the vector
+	for (unsigned int i = 0; i < barcos.size(); i++) {
+		if (barcos[i]->getBoatNr() == barco->getBoatNr()) {
+			barcos.erase(barcos.begin() + i);
+			return;
+		}
+	}
+
+	//If not present, add it
+	barcos.push_back(barco);
+	return;
 }
 
 
@@ -133,11 +154,17 @@ Boat* Land::hasBoat(int boatNr) const {
 	return nullptr;
 }
 
+void Land::tick() {
+	return;
+}
+
+void Land::toggleBarco(Boat* barco){}
+
 //===============================================================================
 //================================ CLASS SEA ====================================
 //===============================================================================
 
-Sea::Sea(int x, int y) :Cell(x,y), peixe(0), barco(nullptr) {}
+Sea::Sea(int x, int y) :Cell(x,y), peixe(peixeMax), barco(nullptr) {}
 
 int Sea::getPeixe() const {
 	return peixe;
@@ -145,8 +172,15 @@ int Sea::getPeixe() const {
 
 Sprite Sea::getSprite() const {
 	Sprite s;
-	s.setSpriteType(Sprite::AGUA);
-	s.setSpriteColor(Consola::AZUL);
+
+	if (barco == nullptr) {
+		s.setSpriteType(Sprite::AGUA);
+		s.setSpriteColor(Consola::AZUL);
+	}
+	else {
+		s.setSpriteType(to_string(barco->getBoatNr())[0]);
+		s.setSpriteColor(Consola::CINZENTO);
+	}
 
 	return s;
 }
@@ -165,4 +199,23 @@ int Sea::hasBoat() const {
 
 Boat* Sea::hasBoat(int boatNr) const {
 	return barco;
+}
+
+void Sea::tick() {
+
+	//Update peixe
+	if (peixe < peixeMax)
+		peixe++;
+
+	//Update barco
+	if (barco != nullptr)
+		barco->tick();
+}
+
+void Sea::toggleBarco(Boat* barco) {
+
+	if (this->barco == nullptr)
+		this->barco = barco;
+	else if (barco->getBoatNr() == this->barco->getBoatNr())
+		this->barco = nullptr;
 }

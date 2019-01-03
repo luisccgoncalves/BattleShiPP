@@ -171,3 +171,9 @@ Boat* Map::findBoat(int boatNr)const {
 
 	return nullptr;
 }
+
+void Map::tick() {
+	for (int y = 0; y < lin; y++)
+		for (int x = 0; x < col; x++)
+			mapa[y][x]->tick();
+}
