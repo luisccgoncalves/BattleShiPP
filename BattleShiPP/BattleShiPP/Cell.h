@@ -80,6 +80,7 @@ class Sea: public Cell {
 public:
 
 	Sea(int x, int y);
+	~Sea();
 	Sprite getSprite() const;
 	int getPeixe() const;
 

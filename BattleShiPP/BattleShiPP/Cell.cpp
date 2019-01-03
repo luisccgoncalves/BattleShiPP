@@ -166,6 +166,10 @@ void Land::toggleBarco(Boat* barco){}
 
 Sea::Sea(int x, int y) :Cell(x,y), peixe(peixeMax), barco(nullptr) {}
 
+Sea::~Sea() {
+	if (barco != nullptr)
+		delete barco;
+}
 int Sea::getPeixe() const {
 	return peixe;
 }
