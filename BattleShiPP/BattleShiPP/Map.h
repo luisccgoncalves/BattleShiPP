@@ -41,6 +41,7 @@ public:
 		BD
 	};
 
+	~Map();
 	Harbour*	getMainHarbour() const;
 
 	Cell*	getCell(int x, int y) const;

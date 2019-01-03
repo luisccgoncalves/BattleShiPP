@@ -11,6 +11,12 @@ const vector<string> Map::direccao{
 		"BD"
 };
 
+Map::~Map() {
+	for (auto line : mapa)
+		for (auto cell : line)
+			delete cell;
+}
+
 Cell* Map::getCell(int x, int y) const {
 	return mapa[y][x];
 }
