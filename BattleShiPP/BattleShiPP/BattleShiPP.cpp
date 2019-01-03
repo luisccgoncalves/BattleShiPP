@@ -350,8 +350,8 @@ void UI::vaiPara(Map &mapa, string cmd) {
 		return;
 	}
 
-	if (barco->setHeading(toNum(param[2]), toNum(param[3])))
-		Beep(500,500);
+	barco->setHeading(toNum(param[2]), toNum(param[3]));
+
 }
 
 bool UI::isNum(string num) {
